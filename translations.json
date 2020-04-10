@@ -1,0 +1,17 @@
+[
+    {
+        "file": "./src/index.html",
+        "en": "Translate this",
+        "fr": "Traduis cela"
+    },
+    {
+        "file": "./src/index.html",
+        "en": "Translate again",
+        "fr": "Traduire à nouveau"
+    },
+    {
+        "file": "./src/index.html",
+        "en": "This is another string with <span>html</span>",
+        "fr": "Ceci est une autre chaîne avec <span> html </span>"
+    }
+]
