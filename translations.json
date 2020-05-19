@@ -1,17 +1,26 @@
 [
     {
-        "file": "./src/index.html",
-        "en": "Translate this",
-        "fr": "Traduis cela"
+        "id": "ii8n-6FlSguT4K",
+        "_src": "./src/index.html",
+        "_dist": "./dist/es/index.html",
+        "en": "Hello, my name is Adam",
+        "fr": "Bonjour mon nom est adam",
+        "es": "Hola mi nombre es Adam"
     },
     {
-        "file": "./src/index.html",
-        "en": "Translate again",
-        "fr": "Traduire à nouveau"
+        "id": "ii8n-m13WqyfIDh",
+        "_src": "./src/index.html",
+        "_dist": "./dist/es/index.html",
+        "en": "Welcome to my site.",
+        "fr": "Bienvenue sur mon site.",
+        "es": "Bienvenido a mi sitio."
     },
     {
-        "file": "./src/index.html",
+        "id": "ii8n-hhWyjzVhfa",
+        "_src": "./src/index.html",
+        "_dist": "./dist/fr/index.html",
         "en": "This is another string with <span>html</span>",
+        "es": "Esta es otra cadena con <span> html </span>",
         "fr": "Ceci est une autre chaîne avec <span> html </span>"
     }
 ]
