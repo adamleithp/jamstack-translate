@@ -1,14 +1,14 @@
 [
     {
-        "id": "ii8n-6FlSguT4K",
+        "id": "ii8n-9xFNBzL3Y",
         "_src": "./src/index.html",
-        "_dist": "./dist/es/index.html",
+        "_dist": "./dist/fr/index.html",
         "en": "Hello, my name is Adam",
-        "fr": "Bonjour mon nom est adam",
-        "es": "Hola mi nombre es Adam"
+        "es": "Hola mi nombre es Adam",
+        "fr": "Bonjour mon nom est adam"
     },
     {
-        "id": "ii8n-m13WqyfIDh",
+        "id": "ii8n-FT2nq3e1ZI",
         "_src": "./src/index.html",
         "_dist": "./dist/es/index.html",
         "en": "Welcome to my site.",
@@ -16,7 +16,7 @@
         "es": "Bienvenido a mi sitio."
     },
     {
-        "id": "ii8n-hhWyjzVhfa",
+        "id": "ii8n-Np3cPBWus0",
         "_src": "./src/index.html",
         "_dist": "./dist/fr/index.html",
         "en": "This is another string with <span>html</span>",

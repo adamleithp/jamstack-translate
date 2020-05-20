@@ -12,7 +12,7 @@ translate.engine = 'google';
 translate.key = process.env.GOOGLE_API_KEY;
 
 
-const supportedLanguages = [
+const SUPPORTED_LANGUAGES = [
     'fr',
     'es',
 ]
@@ -25,7 +25,6 @@ const loadData = async (filePath) => {
     try {
         return fs.readFileSync(filePath, 'utf8')
     } catch (err) {
-        console.error(err)
         return false
     }
 }
@@ -62,9 +61,6 @@ const translateDomCotentsByLanguage = async (language, dom, translationArray) =>
 
 
 const copyFilesToDistLanguage = async (dom, translationArray) => {
-    console.log('dom :>> ', dom.serialize());
-    console.log('translationArray :>> ', translationArray);
-
     try {
         const translations = translationArray
 
@@ -78,17 +74,17 @@ const copyFilesToDistLanguage = async (dom, translationArray) => {
         // Copy files to dist.
         await Promise.all(
             newFileArray.map(async (file) => {
-                supportedLanguages.map(async (language) => {
+                SUPPORTED_LANGUAGES.map(async (language) => {
                     // Get file name from full path
-                    var filename = file.replace(/^.*[\\\/]/, '')
+                    const filename = file.replace(/^.*[\\\/]/, '')
 
                     // Build language directory
                     const fileDestination = `./dist/${language}/${filename}`;
 
-                    console.log('translatedDom :>> ', language);
                     fs.copyFile(file, fileDestination, async (err) => {
                         if (err) throw err;
 
+                        // Copy virtual dom, translate it, write new file in destination
                         const newDom = dom;
                         const translatedDom = await translateDomCotentsByLanguage(language, newDom, translationArray)
                         fs.writeFileSync(fileDestination, translatedDom.serialize(), 'utf-8');
@@ -97,8 +93,8 @@ const copyFilesToDistLanguage = async (dom, translationArray) => {
             })
         );
     } catch (err) {
-        console.log('copyFilesToDistLanguage - something went wrong');
         // handle error
+        console.log('copyFilesToDistLanguage - something went wrong');
     }
 }
 
@@ -107,61 +103,72 @@ const copyFilesToDistLanguage = async (dom, translationArray) => {
 const FILE = './src/index.html';
 // TODO: do all files in src...
 JSDOM.fromFile(FILE, {})
-    .then((dom) => {
+    .then(async (dom) => {
+        let translationArray = await loadData('./translations.json');
+
         // Get translate tags in virtual dom
         const tTags = dom.window.document.getElementsByTagName('t');
-        
-        // Add id to generated virtual dom
-        // Will use this to replace with innerHTML
-        Array.from(tTags).forEach((node) => {
-            node.classList.add(`ii8n-${shortid.generate()}`)
-        })
+
+        // If translationArray exists, find string in DOM, add class to it.
+        if (translationArray) {
+            let parsedTranslationArray = JSON.parse(translationArray)
+            
+            Array.from(tTags).forEach((node) => {
+                // Get this ID based on innerHTML to match
+                const thisEnglish = parsedTranslationArray.find(x => x.en === node.innerHTML);
+                // Add id to generated virtual dom
+                node.classList.add(`ii8n-${thisEnglish.id}`)
+            })
+
+        // Else, create ID's and add class to it.
+        } else {            
+            // Add id to generated virtual dom
+            // Will use this to replace with innerHTML
+            Array.from(tTags).forEach((node) => {
+                node.classList.add(`ii8n-${shortid.generate()}`)
+            })
+        }
 
         // Build array from HTML collection
-        const array = Array.from(tTags)
+        const nodeArray = Array.from(tTags)
 
         // Return what's needed in next step...
         return {
             dom,
-            array
+            nodeArray,
+            translationArray
         }
     })
-    .then(async ({ dom, array }) => {
-        let translationArray = false
-        // let translationArray = await loadData('./translations.json');
+    .then(async ({ dom, nodeArray, translationArray }) => {
+        // Build array of all strings, and their translations.
+        translationArray = await Promise.all(
+            nodeArray.map(async (stringObject) => {
+                // English string
+                const ENGLISH_STRING = stringObject.innerHTML;
+                // Build precursor object
+                let translatedObject = {}
+                
+                // For reference....
+                // Build object of other lanuages translated. 
+                const mainObject = await Promise.all(SUPPORTED_LANGUAGES.map(async (language) => {
+                    // Translate string, with target translation
+                    const TRANSLATED_STRING = await translate(ENGLISH_STRING, { to: language });
 
-        if (!translationArray) {
-            // Build array of all strings, and their translations.
-            translationArray = await Promise.all(
-                array.map(async (stringObject) => {
-                    // English string
-                    const ENGLISH = stringObject.innerHTML;
-                    // Build precursor object
-                    const translatedObject = {}
-                    
-                    // For reference....
-                    // Build object of other lanuages translated. 
-                    const mainObject = await Promise.all(supportedLanguages.map(async (language) => {
-                        // Translate string, with target translation
-                        const TRANSLATED = await translate(ENGLISH, { to: language });
+                    // Build object
+                    translatedObject.id = stringObject.className
+                    translatedObject._src = FILE;
+                    translatedObject._dist = `./dist/${language}/index.html`;
+                    translatedObject.en = ENGLISH_STRING
+                    translatedObject[language] = TRANSLATED_STRING;
+                    return translatedObject
+                }));
 
-                        // Build object
-                        translatedObject.id = stringObject.className
-                        translatedObject._src = FILE;
-                        translatedObject._dist = `./dist/${language}/index.html`;
-                        translatedObject.en = ENGLISH
-                        translatedObject[language] = TRANSLATED;
-                        return translatedObject
-                    }));
-    
-                    return mainObject[0]
-                })
-            );
-            // Build file of translations
-            await storeData(translationArray, 'translations.json');
-        }
+                return mainObject[0]
+            })
+        );
+        // Build file of translations
+        await storeData(translationArray, 'translations.json');
 
-        // console.log('translationArray :>> ', translationArray);
         await copyFilesToDistLanguage(dom, translationArray)
     }).finally(() => {
         console.log('FINISHED');

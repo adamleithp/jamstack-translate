@@ -26,7 +26,7 @@ Use Nodejs to pull in a source file, use JSDOM to get all `<t>` tags within dom,
 - [x] Replace each `dist/${lang}/` with their translations.
 - [ ] Clean up translation.json file, duplicates in there.
 - [ ] Allow `<title>` translations, as this is parsed as a string inside the html. Do replace?
-- [ ] Reimplement loading of translation.json file, instead of creating one everytime. (need to use classname in file as-well.)
+- [x] Reimplement loading of translation.json file, instead of creating one everytime. (need to use classname in file as-well.)
 - [ ] Test Vue.js cli starter
 - [ ] Test React.js cli starter
 - [ ] Test Svelte.js cli starter
