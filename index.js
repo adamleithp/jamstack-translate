@@ -11,15 +11,13 @@ const translate = require('./lib/translate');
 translate.engine = 'google';
 translate.key = process.env.GOOGLE_API_KEY;
 
+// TODO: make this a directory path instead, loop through all files below.
+const FILE = './src/index.html';
 
 const SUPPORTED_LANGUAGES = [
     'fr',
     'es',
 ]
-
-// const REGEX = RegExp(`<t>(.*?)</t>`);
-// const StringToTranslate = [];
-
 
 const loadData = async (filePath) => {
     try {
@@ -37,8 +35,6 @@ const storeData = async (data, path) => {
         console.error(err)
     }
 }
-
-
 
 const translateDomCotentsByLanguage = async (language, dom, translationArray) => {
     const translations = translationArray
@@ -98,10 +94,8 @@ const copyFilesToDistLanguage = async (dom, translationArray) => {
     }
 }
 
-
-
-const FILE = './src/index.html';
-// TODO: do all files in src...
+// INIT
+// TODO: Create a loop around each file in directory.
 JSDOM.fromFile(FILE, {})
     .then(async (dom) => {
         let translationArray = await loadData('./translations.json');
