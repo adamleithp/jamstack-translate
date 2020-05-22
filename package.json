@@ -12,9 +12,6 @@
     "bluebird": "^3.7.2",
     "dotenv": "^8.2.0",
     "jsdom": "^16.2.2",
-    "line-reader": "^0.4.0",
-    "ncp": "^2.0.0",
-    "node-fetch": "^2.6.0",
     "shortid": "^2.2.15"
   }
 }
