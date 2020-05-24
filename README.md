@@ -1,14 +1,46 @@
 
-## ih8i18n / I hate internationalization
+# ih8i18n - Generate-Static-Translations-From-Source
 
 #### Static Translations for any front end project.
-Google Translate your source folder and compile to static dist language directories without writing convoluted references to json files... I hate i18n libraries so much.
+Google Translate your source folder and compile to static dist language directories without writing convoluted references to json files... I hate i18n libraries so much, here is my personal fix.
 
-### The End Goal
-(TO BE) Used as a webpack/rollup config, which will allow you to simply wrap all strings in your source code with `<t>` and a `</t>`, and on compile for production, it will spit out a translated `${lang}.bundle.js` file. Then simply create a route switch to change bundles/languages.
+## Why do this?
+Internationalization libraries work, but...
+* Text context is kept for sanity. No guessing what text is behind a reference variable.
+* Google translate on the fly, generate JSON file, load from file. (Coming soon)
+* Reduce load times (won't load ALL translations in a single bundle)
+* I hate i18n so much. 
 
-## Uses
-Use Nodejs to pull in a source file, use JSDOM to get all `<t>` tags within dom, create unique className, replace and translate each elements content, then finally copy source file with new DOM to repective dist/lang folder.
+## What is it?
+Create static translated copies of any source folder in your project, then simply load that translated html/bundle on load.
+
+```
+.
+├── src
+|   └── components
+|   |   └── Header.svelte
+|   └── App.svelte
+|   └── main.js
+```
+
+Becomes...
+```
+.
+├── src
+|   ├── __generated__
+|   |   └── es
+|   |   |   └── components
+|   |   |   |   └── Header.svelte
+|   |   |   └── App.svelte
+|   |   └── fr
+|   |   |   └── components
+|   |   |   |   └── Header.svelte
+|   |   |   └── App.svelte
+|   └── components
+|   |   └── Header.svelte
+|   └── App.svelte
+|   └── main.js
+```
 
 ## How to use 
 * Create your `.env` file from `.env.example`, put your Google Translate API key there.
@@ -18,57 +50,15 @@ Use Nodejs to pull in a source file, use JSDOM to get all `<t>` tags within dom,
 * Your `./dist/` folder will now hold your translated html in static form.
 
 
+#### Install
+`npm install ih8i18n`
+`touch ./translate.js`
 
-
-
-
-## TODO
-- [x] Proof of concept with only HTML files (`index.html` => `fr/index.html`)
-- [x] Parse target folder (src) for all <t> tags.
-- [x] Build JSON file of translations from English
-- [x] Copy `src/` to `dist/${lang}/`
-- [x] Replace each `dist/${lang}/` with their translations.
-- [ ] Clean up translation.json file, duplicates in there.
-- [ ] Allow `<title>` translations, as this is parsed as a string inside the html. Do replace?
-- [x] Reimplement loading of translation.json file, instead of creating one everytime. (need to use classname in file as-well.)
-- [ ] Test Vue.js cli starter
-- [ ] Test React.js cli starter
-- [ ] Test Svelte.js cli starter
-
-
-
-### Translation.json (Created/Pulled)
-```
-[
-  {
-    "id": "ii8n-6FlSguT4K",
-    "_src": "./src/index.html",
-    "_dist": "./dist/es/index.html",
-    "en": "Hello, my name is Adam",
-    "fr": "Bonjour mon nom est adam",
-    "es": "Hola mi nombre es Adam"
-  },
-  {
-    "id": "ii8n-m13WqyfIDh",
-    "_src": "./src/index.html",
-    "_dist": "./dist/es/index.html",
-    "en": "Welcome to my site.",
-    "fr": "Bienvenue sur mon site.",
-    "es": "Bienvenido a mi sitio."
-  }
-]
-```
-
-
-
-### NPM Module
-`npm install <name>`
-`touch translate.js`
-`nano translate.js`
+Edit `translate.js`
 
 ```javascript
-const translate = require('translate');
-
+const translate = require('ih8i18n');
+const GOOGLEKEY = 'GOOGLE_API_KEY_HERE'
 const targetLanguages = [
   'fr',
   'es',
@@ -86,19 +76,31 @@ const folderStructure = [
   }
 ]
 
-const GOOGLEKEY = 'GOOGLE API KEY HERE'
-
 const init = async () => {
   const result = await translate(GOOGLEKEY, {
     targetLanguages,
     sourceFolder,
     folderStructure
   });
+  console.log(result) //ouputs created files
 }
 
 init();
 ```
+Run the file
 `node translate.js`
+
+```
+Files created:
+./translations.json
+./src/__generated__/fr/App.svelte
+./src/__generated__/fr/App.svelte
+./src/__generated__/es/App.svelte
+./src/__generated__/es/App.svelte
+./src/__generated__/fr/components/Footer.svelte
+./src/__generated__/es/components/Footer.svelte
+./src/__generated__/ja/components/Footer.svelte
+```
 
 With the above settings, your source folder will look like this after.
 ```
@@ -119,51 +121,99 @@ With the above settings, your source folder will look like this after.
 |   └── main.js
 ```
 
+
+## Use with your JS framework
+*Note: Below is with Svelte v3, other docs will coming soon.*
+
+#### Entry files
 Create new main.js files for each new langauge,
 ```
 .
 ├── src
 |   └── App.svelte
-|   └── main-es.js
-|   └── main-fr.js
+|   └── main-es.js <<<<
+|   └── main-fr.js <<<<
 |   └── main.js
 ```
 
 Edit each new main file, and point to your new entry file
 
-Example `main-fr.js`
-
+// `main-fr.js`
 ```javascript
 import App from './__generated__/fr/App.svelte';
 
 const app = new App({
 	target: document.body,
 	props: {
-		name: 'world'
+	  name: 'world'
 	}
 });
 
 export default app;
 ```
 
-Generate a new bundle for each main file,
-then in your html, instead of a script tag for bundle.js
-```html
-<script>
-  var urlParams = new URLSearchParams(window.location.search);
-  var language = urlParams.get('lng');
-  language = language.toLowerCase()
+#### Bundler (Rollup.js)
 
-  var head = document.getElementsByTagName('head')[0];
-  var script = document.createElement('script');
-  script.type = 'module';
-  script.src = '/build/bundle_' + language + '.js';
-  head.appendChild(script);
-</script>
+Generate a new bundle for each main file
 
-<!-- <script defer src='/build/bundle.js'></script> -->
+// `Rollup.config.js`
+```javascript
+//...
+import multiInput from 'rollup-plugin-multi-input';
+
+export default {
+	input: [{
+		bundle_en: 'src/main.js',
+		bundle_fr: 'src/main-fr.js',
+		bundle_es: 'src/main-es.js',
+	}],
+	output: {
+		sourcemap: true,
+		name: 'app',
+		format: 'es',
+		dir: 'public/build'
+	},
+	plugins: [
+		multiInput(),
+		// ...
 ```
 
+
+#### Index.html (using new bundle)
+In your HTML, instead of a script tag for bundle.js, dynamically load your new bundle depending on query param `?lng={language}`
+```html
+<!-- <script defer src='/build/bundle.js'></script> -->
+<script>
+	var urlParams = new URLSearchParams(window.location.search);
+	var language = urlParams.get('lng');
+	language = language.toLowerCase()
+
+	var head = document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+	script.type = 'module';
+	script.src = '/build/bundle_' + language + '.js';
+	head.appendChild(script);
+</script>
+
+```
+
+#### Testing each language
 And then use like so:
 
 `http://localhost:5000/?lng=es`
+
+
+
+
+## TODO
+- [x] Proof of concept with only HTML files (`index.html` => `fr/index.html`)
+- [x] Parse target folder (src) for all <t> tags.
+- [x] Build JSON file of translations from English
+- [x] Copy `src/` to `dist/${lang}/`
+- [x] Replace each `dist/${lang}/` with their translations.
+- [x] Clean up translation.json file, duplicates in there.
+- [ ] Allow `<title>` translations, as this is parsed as a string inside the html. Do replace?
+- [ ] Reimplement loading of already generated translation.json file
+- [x] Test Svelte.js cli starter
+- [ ] Test Vue.js cli starter
+- [ ] Test React.js cli starter
