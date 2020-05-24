@@ -18,6 +18,10 @@ Use Nodejs to pull in a source file, use JSDOM to get all `<t>` tags within dom,
 * Your `./dist/` folder will now hold your translated html in static form.
 
 
+
+
+
+
 ## TODO
 - [x] Proof of concept with only HTML files (`index.html` => `fr/index.html`)
 - [x] Parse target folder (src) for all <t> tags.
@@ -30,6 +34,7 @@ Use Nodejs to pull in a source file, use JSDOM to get all `<t>` tags within dom,
 - [ ] Test Vue.js cli starter
 - [ ] Test React.js cli starter
 - [ ] Test Svelte.js cli starter
+
 
 
 ### Translation.json (Created/Pulled)
@@ -53,3 +58,112 @@ Use Nodejs to pull in a source file, use JSDOM to get all `<t>` tags within dom,
   }
 ]
 ```
+
+
+
+### NPM Module
+`npm install <name>`
+`touch translate.js`
+`nano translate.js`
+
+```javascript
+const translate = require('translate');
+
+const targetLanguages = [
+  'fr',
+  'es',
+]
+const sourceFolder = './src/'
+const folderStructure = [
+  {
+    src: [
+      'App.svelte',
+      'components/**/*.svelte'
+    ]
+  },
+  {
+    dist: '__generated__/{language}/'
+  }
+]
+
+const GOOGLEKEY = 'GOOGLE API KEY HERE'
+
+const init = async () => {
+  const result = await translate(GOOGLEKEY, {
+    targetLanguages,
+    sourceFolder,
+    folderStructure
+  });
+}
+
+init();
+```
+`node translate.js`
+
+With the above settings, your source folder will look like this after.
+```
+.
+├── src
+|   ├── __generated__
+|   |   └── es
+|   |   |   └── components
+|   |   |   |   └── Header.svelte
+|   |   |   └── App.svelte
+|   |   └── fr
+|   |   |   └── components
+|   |   |   |   └── Header.svelte
+|   |   |   └── App.svelte
+|   └── components
+|   |   └── Header.svelte
+|   └── App.svelte
+|   └── main.js
+```
+
+Create new main.js files for each new langauge,
+```
+.
+├── src
+|   └── App.svelte
+|   └── main-es.js
+|   └── main-fr.js
+|   └── main.js
+```
+
+Edit each new main file, and point to your new entry file
+
+Example `main-fr.js`
+
+```javascript
+import App from './__generated__/fr/App.svelte';
+
+const app = new App({
+	target: document.body,
+	props: {
+		name: 'world'
+	}
+});
+
+export default app;
+```
+
+Generate a new bundle for each main file,
+then in your html, instead of a script tag for bundle.js
+```html
+<script>
+  var urlParams = new URLSearchParams(window.location.search);
+  var language = urlParams.get('lng');
+  language = language.toLowerCase()
+
+  var head = document.getElementsByTagName('head')[0];
+  var script = document.createElement('script');
+  script.type = 'module';
+  script.src = '/build/bundle_' + language + '.js';
+  head.appendChild(script);
+</script>
+
+<!-- <script defer src='/build/bundle.js'></script> -->
+```
+
+And then use like so:
+
+`http://localhost:5000/?lng=es`

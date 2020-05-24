@@ -449,128 +449,40 @@ const translateFromDirectory = () => {
 }
    
 
-const buildFolderPath = (array) => {
-    const path = array.slice(2).join('/')
-    return path;
-}
-
-module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStructure }) => {
+module.exports = async (frameworkType, GOOGLEKEY, input, output) => {
     translate.key = GOOGLEKEY;
-    // framework = frameworkType
-    // inputFolder = input
-    // outputFolder = output
+    framework = frameworkType
+    inputFolder = input
+    outputFolder = output
 
-    const payload = targetLanguages.map(language => {
-        const src = folderStructure[0];
-        const dist = folderStructure[1];
-        const filesArray = src.src.map(fileName => {
-            const localArray = []
-
-            if (fileName.includes("*")) {
-                const files = glob.sync(sourceFolder + fileName, {})
-
-                const localGlobFileArray = files.map(globFile => {
-                    const fileNameReplaced = globFile.replace(/^.*[\\\/]/, '')
-                    const filePathJoined = buildFolderPath(globFile.split('/'));
-
-                    const obj = {
-                        targetLanguage: language,
-                        sourceFileName: fileNameReplaced,
-                        sourceFilePath: globFile,
-                        distFilePath: sourceFolder + dist.dist.replace('{language}', language),
-                        distFileName: filePathJoined
-                    }
-                    localArray.push(obj) 
-                    return obj;
-                })
-                localArray.push(localGlobFileArray[0])
-            } else {
-                localArray.push({
-                    targetLanguage: language,
-                    sourceFileName: fileName,
-                    sourceFilePath: sourceFolder + fileName,
-                    distFilePath: sourceFolder + dist.dist.replace('{language}', language),
-                    distFileName: fileName
-                })
-            }
-            return localArray[0];
-        })
-        return filesArray
-    })
-
-    // example flattenedPayload = [
-    //     {
-    //         targetLanguage: 'fr',
-    //         sourceFileName: 'App.svelte',
-    //         sourceFilePath: './src/App.svelte',
-    //         distFilePath: './src/__generated__/fr/',
-    //         distFileName: 'App.svelte'
-    //     },
-    //     {
-    //         targetLanguage: 'fr',
-    //         sourceFileName: 'Header.svelte',
-    //         sourceFilePath: './src/components/Header.svelte',
-    //         distFilePath: './src/__generated__/fr/',
-    //         distFileName: 'components/Header.svelte'
-    //     },
-    //     {
-    //         targetLanguage: 'es',
-    //         sourceFileName: 'App.svelte',
-    //         sourceFilePath: './src/App.svelte',
-    //         distFilePath: './src/__generated__/es/',
-    //         distFileName: 'App.svelte'
-    //     },
-    //     {
-    //         targetLanguage: 'es',
-    //         sourceFileName: 'Header.svelte',
-    //         sourceFilePath: './src/components/Header.svelte',
-    //         distFilePath: './src/__generated__/es/',
-    //         distFileName: 'components/Header.svelte'
-    //     }
-    // ]
-
-    // console.log('FINISHED :>> ', payload);
-    const flattenedPayload = [].concat.apply([], payload);
-    console.log('FINISHED :>> ', flattenedPayload);
-
-    // For each payload object...
-        // Load source file into JSDOM
-        // Get all <t>,
-        // For each <t>
-            // generate ID
-            // <t class="ID">
-            // translate innherHTML
-            // create file in dist.
-            
-    await Promise.all(
-        flattenedPayload.map(async (payloadObject) => {
-            const thisFileContent = await loadData(payloadObject.sourceFilePath);
-            const thisVirtualDom = new JSDOM(thisFileContent);
-            const thisVirtualNode = thisVirtualDom.window.document.getElementsByTagName('t');
-            const thisNodeArray = Array.from(thisVirtualNode);
-
-            await Promise.all(
-                thisNodeArray.map(async (thisNode) => {
-                    const ENGLISH_STRING = thisNode.innerHTML;
-                    let TRANSLATED_STRING = await translate(ENGLISH_STRING, { to: payloadObject.targetLanguage });
-                    // thisNode.classList.add(`${shortid.generate()}`)
-                    thisNode.innerHTML = TRANSLATED_STRING
-                })
-            );
-
-            let thisVirtualDomString = String(thisVirtualDom.serialize());
-            thisVirtualDomString = thisVirtualDomString.replace('<html><head>', '')
-            thisVirtualDomString = thisVirtualDomString.replace('</head><body>', '')
-            thisVirtualDomString = thisVirtualDomString.replace('</body></html>', '')
-            thisVirtualDomString = thisVirtualDomString.replace('"> ', '">')
-            thisVirtualDomString = thisVirtualDomString.replace(' </a>', '</a>')
-            thisVirtualDomString = thisVirtualDomString.replace('$ {', '${')
-
-            fs.writeFileSync(`${payloadObject.distFilePath}/${payloadObject.distFileName}`, thisVirtualDomString, 'utf-8');
-        })
-    )
-
-    // Return files created for user
+    await translateFromDirectory()
     return true;
 }
+
+
+// // For each line in a file, build array of translation and build file
+// // (Put this in a for each file in directory.)
+// eachLine(FILE, (line) => {
+//     let matches = [...line.matchAll(REGEX)];
+//     if (matches[0] !== undefined) {
+//         // console.log('matches', FILE, matches);
+        
+
+//         StringToTranslate.push({
+//             file: FILE,
+//             en: matches[0][1],
+//         })
+//     }
+// }).then(async () => {
+//     await Promise.all(
+//         StringToTranslate.map(async (stringObject) => {
+//             const FRENCH = await translate(stringObject.en, { to: 'fr' });
+//             stringObject.fr = FRENCH;
+//         })
+//     );
+
+//     await storeData(StringToTranslate, 'translations.json')
+// }).catch((err) => {
+//     console.error(err);
+// });
 
