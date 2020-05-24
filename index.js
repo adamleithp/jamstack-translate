@@ -6,7 +6,7 @@ const glob = require("glob")
 const shortid = require('shortid');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-const translate = require('./lib/translate');
+const translate = require('translate');
 translate.engine = 'google';
 
 

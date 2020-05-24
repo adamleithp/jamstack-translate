@@ -1,17 +1,19 @@
 
-# ih8i18n - Generate-Static-Translations-From-Source
+# jamstack-translate
 
-#### Static Translations for any front end project.
+#### Generate static translations for any front end project.
 Google Translate your source folder and compile to static dist language directories without writing convoluted references to json files... I hate i18n libraries so much, here is my personal fix.
 
-## Why do this?
-Internationalization libraries work, but...
-* Text context is kept for sanity. No guessing what text is behind a reference variable.
+## Getting started
+This pacakge is to be used in Node.js 
+
+#### Why?
+Internationalization libraries work, but what `jamstack-translate` does that i18n libraries don't...
+* Text context is kept for sanity. No guessing what text is behind a reference variable. Just your text as you write it.
 * Google translate on the fly, generate JSON file, load from file. (Coming soon)
 * Reduce load times (won't load ALL translations in a single bundle)
-* I hate i18n so much. 
 
-## What is it?
+#### What?
 Create static translated copies of any source folder in your project, then simply load that translated html/bundle on load.
 
 ```
@@ -42,22 +44,19 @@ Becomes...
 |   └── main.js
 ```
 
-## How to use 
-* Create your `.env` file from `.env.example`, put your Google Translate API key there.
-* Edit your `./src/index.html` file (Put all your translated content in `<t>` (t-tags))
-* Open index.js, and add your languages you want to support. (check ./lib/translate.js) for supported languages.
-* `node index.js`
-* Your `./dist/` folder will now hold your translated html in static form.
+## Requirements
+* Node.js
+* Google Cloud Translate account + API Key
 
+## Getting started
+`npm install --save-dev jamstack-translate`
 
-#### Install
-`npm install ih8i18n`
-`touch ./translate.js`
+Create file in your project root you want to translate.
 
-Edit `translate.js`
+// `translate.js`
 
 ```javascript
-const translate = require('ih8i18n');
+const translate = require('jamstack-translate');
 const GOOGLEKEY = 'GOOGLE_API_KEY_HERE'
 const targetLanguages = [
   'fr',
