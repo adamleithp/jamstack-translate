@@ -1,3 +1,3 @@
-<header>
-  <t class="Qcs-MPi0VO">Adiós</t>
-</header>
+<footer>
+  <t>Adiós</t>
+</footer>

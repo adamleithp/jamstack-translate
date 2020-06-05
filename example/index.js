@@ -33,7 +33,7 @@ const folderStructure = [
 const options = {
   translationFile: './translations.json',
   loadCustomTranslation: false,
-  uniqueIdsForDomElements: true,
+  uniqueIdsForDomElements: false,
 }
 
 const GOOGLEKEY = process.env.GOOGLE_API_KEY

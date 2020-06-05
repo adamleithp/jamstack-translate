@@ -1,3 +1,3 @@
-<header>
+<footer>
   <t>Goodbye</t>
-</header>
+</footer>

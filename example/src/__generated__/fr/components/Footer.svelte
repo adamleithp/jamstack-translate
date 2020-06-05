@@ -1,3 +1,3 @@
-<header>
-  <t class="AzRneDEGjg">Au revoir</t>
-</header>
+<footer>
+  <t>Au revoir</t>
+</footer>
