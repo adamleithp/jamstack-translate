@@ -1,10 +1,24 @@
 [
     {
+        "_src": "./src/App.svelte",
+        "_dist": "./src/__generated__/fr/App.svelte",
+        "en": "Hello my name is ${name}, nice to meet you!",
+        "es": "Hola, mi nombre es ${name}. ¡Mucho gusto!",
+        "fr": "Bonjour mon nom est ${name}, ravi de vous rencontrer!"
+    },
+    {
+        "_src": "./src/App.svelte",
+        "_dist": "./src/__generated__/fr/App.svelte",
+        "en": "Visit the <a href=\"https://svelte.dev/tutorial\">Svelte tutorial</a> to learn how to build Svelte apps.",
+        "es": "Visite el <a href=\"https://svelte.dev/tutorial\">tutorial de Svelte</a> para aprender a crear aplicaciones de Svelte.",
+        "fr": "Consultez le <a href=\"https://svelte.dev/tutorial\">didacticiel Svelte</a> pour savoir comment créer des applications Svelte."
+    },
+    {
         "_src": "./src/components/Footer.svelte",
-        "_dist": "./src/__generated__/fr/components/Footer.svelte",
+        "_dist": "./src/__generated__/es/components/Footer.svelte",
         "en": "Goodbye",
-        "es": "Adiós",
-        "fr": "Au revoir"
+        "fr": "Au revoir",
+        "es": "Adiós"
     },
     {
         "_src": "./src/views/Home.svelte",
@@ -21,24 +35,10 @@
         "fr": "Bienvenue"
     },
     {
-        "_src": "./src/App.svelte",
-        "_dist": "./src/__generated__/fr/App.svelte",
-        "en": "Visit the <a href=\"https://svelte.dev/tutorial\">Svelte tutorial</a> to learn how to build Svelte apps.",
-        "es": "Visite el <a href=\"https://svelte.dev/tutorial\">tutorial de Svelte</a> para aprender a crear aplicaciones de Svelte.",
-        "fr": "Consultez le <a href=\"https://svelte.dev/tutorial\">didacticiel Svelte</a> pour savoir comment créer des applications Svelte."
-    },
-    {
-        "_src": "./src/App.svelte",
-        "_dist": "./src/__generated__/es/App.svelte",
-        "en": "Hello my name is ${name}, nice to meet you!",
-        "fr": "Bonjour mon nom est ${name}, ravi de vous rencontrer!",
-        "es": "Hola, mi nombre es ${name}. ¡Mucho gusto!"
-    },
-    {
         "_src": "./src/views/About.svelte",
-        "_dist": "./src/__generated__/es/views/About.svelte",
+        "_dist": "./src/__generated__/fr/views/About.svelte",
         "en": "About Page",
-        "fr": "À propos de la page",
-        "es": "Sobre la página"
+        "es": "Sobre la página",
+        "fr": "À propos de la page"
     }
 ]

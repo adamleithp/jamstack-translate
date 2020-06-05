@@ -5,7 +5,7 @@
 </script>
 
 <header>
-<main id="html">
+<main>
 	<h1>{@html `<t>Bonjour mon nom est ${name}, ravi de vous rencontrer!</t>`}</h1>
 	<p>{@html `<t>Consultez le <a href="https://svelte.dev/tutorial">didacticiel Svelte</a> pour savoir comment créer des applications Svelte.</t>`}</p>
 	<input bind:value="{name}">
