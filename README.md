@@ -185,7 +185,7 @@ And then use like so:
 `http://localhost:5000/?lng=es`
 
 **Note for Svelte.js**:  
-Svelte splits elements apart on compile, so in order to a dynamic string inside a translated file, you must set InnerHTML like so; This works really well :D
+Svelte splits elements apart on compile, so in order to a dynamic string inside a translated file, you must set InnerHTML like so; This works really well :D (or google translate might make `name` into `nombre`...)
 ```javascript
 {@html `<t>Hello my name is ${name}, nice to meet you!</t>`}
 ```
@@ -206,3 +206,5 @@ Svelte splits elements apart on compile, so in order to a dynamic string inside 
 - [x] Framework agnostic
 - [ ] Typescript
 - [ ] Tests
+- [ ] Look into an "escape keywork" for variables. Without handlebar variable ${var}, google translate can transform our variables: `{name}` becomes `{nombre}` etc.
+  - [ ] Triple underscore idea: `<t>Hello ___{name}___</t>` => `<t>Hola {name}</t>`

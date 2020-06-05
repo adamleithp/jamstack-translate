@@ -69,7 +69,6 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
         try {
             existingTranslationFile = await loadData(translationFile);
             existingTranslationFile = JSON.parse(existingTranslationFile);
-            console.log('existingTranslationFile :>> ', existingTranslationFile);
         } catch (error) {
             console.log(`${translationFile} has invalid JSON.`);
         }
