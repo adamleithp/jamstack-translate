@@ -201,6 +201,7 @@ Svelte splits elements apart on compile, so in order to a dynamic string inside 
 - [x] Copy `src/` to `dist/${lang}/`
 - [x] Replace each `dist/${lang}/` with their translations.
 - [x] Clean up translation.json file, duplicates in there.
+- [ ] Include a raw copy of other folders which aren't translated or update links to original source files.
 - [ ] Allow `<title>` translations, as this is parsed as a string inside the html. Do replace?
 - [x] Reimplement loading of already generated translation.json file
 - [x] Test Svelte.js cli starter
