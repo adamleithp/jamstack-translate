@@ -21,8 +21,8 @@ const folderStructure = [
 ]
 
 const options = {
-  translationFile: './translations-new.json',
-  loadCustomTranslation: false,
+  translationFile: './translations.json',
+  loadCustomTranslation: true,
 }
 
 const GOOGLEKEY = process.env.GOOGLE_API_KEY
