@@ -58,6 +58,7 @@ const replaceHTMLData = async (string) => {
 module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStructure, options }) => {
     translate.key = GOOGLEKEY;
 
+    const uniqueIdsForDomElements = options.uniqueIdsForDomElements ? true : false;
     const translationFile = options.translationFile ? options.translationFile : './translations.json';
     const loadCustomTranslations = options.loadCustomTranslation ? options.loadCustomTranslation : false;
     let stringNotFound = false;
@@ -137,7 +138,6 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
 
             await Promise.all(
                 thisNodeArray.map(async (thisNode) => {
-                    const uniqueId = shortid.generate();
                     const ENGLISH_STRING = thisNode.innerHTML;
 
                     let transaltedStringReplaced;
@@ -164,14 +164,19 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
                         transaltedStringReplaced = await replaceTranslationData(TRANSLATED_STRING)
                     }
 
+                    let uniqueId = uniqueIdsForDomElements ? shortid.generate() : null;
 
-                    thisNode.classList.add(uniqueId)
+                    if (uniqueIdsForDomElements) {
+                        thisNode.classList.add(uniqueId)
+                    }
                     thisNode.innerHTML = transaltedStringReplaced
 
                     const translationFileArrayObject = {}
                     translationFileArrayObject._src = payloadObject.sourceFilePath
                     translationFileArrayObject._dist = `${payloadObject.distFilePath}${payloadObject.distFileName}`
-                    translationFileArrayObject.id = uniqueId;
+                    if (uniqueIdsForDomElements) {
+                        translationFileArrayObject.id = uniqueId
+                    }
                     translationFileArrayObject.en = ENGLISH_STRING;
                     translationFileArrayObject[payloadObject.targetLanguage] = transaltedStringReplaced;
            
@@ -203,8 +208,6 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     }    
 
     const mergedArray = mergeObjectsInUnique(translationFileArray, 'en');
-
-    console.log('mergedArray :>> ', mergedArray);
 
     if (stringNotFound || !existingTranslationFile) {
         await storeData(mergedArray, translationFile);

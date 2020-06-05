@@ -10,13 +10,13 @@
 // * * Target translation file to save all translations
 // * * Load Custom transaltion file (do not translate, simply build generated file structure from saved JSON)
 require('dotenv').config()
-const translate = require('./index.js');
+const translate = require('../index.js');
 
 const targetLanguages = [
   'fr',
   'es',
 ]
-const sourceFolder = './test-src/'
+const sourceFolder = './src/'
 const folderStructure = [
   {
     src: [
@@ -31,8 +31,9 @@ const folderStructure = [
 ]
 
 const options = {
-  translationFile: './translations2.json',
-  loadCustomTranslation: true,
+  translationFile: './translations.json',
+  loadCustomTranslation: false,
+  uniqueIdsForDomElements: true,
 }
 
 const GOOGLEKEY = process.env.GOOGLE_API_KEY
