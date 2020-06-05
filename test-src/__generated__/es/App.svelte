@@ -6,8 +6,8 @@
 
 <header>
 <main id="html">
-	<h1>{@html `<t class="BESMLfs9AU">Hola, mi nombre es ${name}. ¡Mucho gusto!</t>`}</h1>
-	<p>{@html `<t class="RqT1w0aawf">Visite el <a href="https://svelte.dev/tutorial">tutorial de Svelte</a> para aprender a crear aplicaciones de Svelte.</t>`}</p>
+	<h1>{@html `<t class="SOon7T220a">Hola, mi nombre es ${name}. ¡Mucho gusto!</t>`}</h1>
+	<p>{@html `<t class="aFDA83BH9t">Visite el <a href="https://svelte.dev/tutorial">tutorial de Svelte</a> para aprender a crear aplicaciones de Svelte.</t>`}</p>
 	<input bind:value="{name}">
 </main>
 

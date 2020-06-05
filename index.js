@@ -60,6 +60,7 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
 
     const translationFile = options.translationFile ? options.translationFile : './translations.json';
     const loadCustomTranslations = options.loadCustomTranslation ? options.loadCustomTranslation : false;
+    let stringNotFound = false;
 
     let existingTranslationFile = null;
 
@@ -145,8 +146,19 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
                         const thisTranslationObject = existingTranslationFile.filter(translationFileObject => {
                             return translationFileObject.en === ENGLISH_STRING;
                         })[0]
+                        
                         // TODO: Add duplicate detection here... remove [0] above...
-                        transaltedStringReplaced = thisTranslationObject[payloadObject.targetLanguage]
+
+                        // Error handling
+                        // If English string is not found, generate
+                        if (!thisTranslationObject) {
+                            console.log(`String was not found, translating: ${ENGLISH_STRING}`);
+                            const TRANSLATED_STRING = await translate(ENGLISH_STRING, { to: payloadObject.targetLanguage });
+                            transaltedStringReplaced = await replaceTranslationData(TRANSLATED_STRING)
+                            stringNotFound = true;
+                        } else {
+                            transaltedStringReplaced = thisTranslationObject[payloadObject.targetLanguage]
+                        }
                     } else {
                         const TRANSLATED_STRING = await translate(ENGLISH_STRING, { to: payloadObject.targetLanguage });
                         transaltedStringReplaced = await replaceTranslationData(TRANSLATED_STRING)
@@ -192,7 +204,9 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
 
     const mergedArray = mergeObjectsInUnique(translationFileArray, 'en');
 
-    if (!existingTranslationFile) {
+    console.log('mergedArray :>> ', mergedArray);
+
+    if (stringNotFound || !existingTranslationFile) {
         await storeData(mergedArray, translationFile);
     }
     

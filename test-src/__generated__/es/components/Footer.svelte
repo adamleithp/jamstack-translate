@@ -1,3 +1,3 @@
 <header>
-  <t class="LMAetl5GyE">Adiós</t>
+  <t class="jijQGfield">Adiós</t>
 </header>

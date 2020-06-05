@@ -1,3 +1,3 @@
 <header>
-  <t class="NipUc_H3Q_">Au revoir</t>
+  <t class="Q4HVSbJTNb">Au revoir</t>
 </header>

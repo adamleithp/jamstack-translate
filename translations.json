@@ -4,16 +4,8 @@
         "_dist": "./test-src/__generated__/fr/views/About.svelte",
         "id": "FYtHMS5BqB",
         "en": "About Page",
-        "es": "Sobre la página",
-        "fr": "À propos de la page"
-    },
-    {
-        "_src": "./test-src/views/Home.svelte",
-        "_dist": "./test-src/__generated__/fr/views/Home.svelte",
-        "id": "1g1WuTy-Pj",
-        "en": "Home Page",
-        "es": "Página de inicio",
-        "fr": "Page d'accueil"
+        "es": "CUSTOM SPANISH TRANSLATION",
+        "fr": "CUSTOM FRENCH TRANSLATION"
     },
     {
         "_src": "./test-src/components/Header.svelte",

@@ -1,3 +1,3 @@
 <header>
-  <t class="M_LzlFIPBV">ACCUEILL BITCH</t>
+  <t class="UAcbfwd2yQ">Page d'accueil</t>
 </header>

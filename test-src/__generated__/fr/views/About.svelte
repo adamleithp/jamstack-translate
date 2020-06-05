@@ -1,3 +1,3 @@
 <header>
-  <t class="sDfFpe7Mh2">À propos de la page</t>
+  <t class="VLV3GWAm-I">À propos de la page</t>
 </header>

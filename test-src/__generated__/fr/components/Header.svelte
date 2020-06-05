@@ -1,3 +1,3 @@
 <header>
-  <t class="xb7bxOnd-X">Bienvenue</t>
+  <t class="anc2EaBwHq">Bienvenue</t>
 </header>

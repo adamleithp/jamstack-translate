@@ -1,3 +1,3 @@
 <header>
-  <t class="XSng_1bts9">Página de inicio</t>
+  <t class="CP6TVjflv3">Página de inicio</t>
 </header>
