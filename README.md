@@ -98,7 +98,6 @@ Files created:
 ./src/__generated__/es/App.svelte
 ./src/__generated__/fr/components/Footer.svelte
 ./src/__generated__/es/components/Footer.svelte
-./src/__generated__/ja/components/Footer.svelte
 ```
 
 With the above settings, your source folder will look like this after.

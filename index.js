@@ -55,8 +55,23 @@ const replaceHTMLData = async (string) => {
     return newString
 }
 
-module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStructure }) => {
+module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStructure, options }) => {
     translate.key = GOOGLEKEY;
+
+    const translationFile = options.translationFile ? options.translationFile : './translations.json';
+    const loadCustomTranslations = options.loadCustomTranslation ? options.loadCustomTranslation : false;
+
+    let existingTranslationFile = null;
+
+    if (loadCustomTranslations) {
+        try {
+            existingTranslationFile = await loadData(translationFile);
+            existingTranslationFile = JSON.parse(existingTranslationFile);
+            console.log('existingTranslationFile :>> ', existingTranslationFile);
+        } catch (error) {
+            console.log(`${translationFile} has invalid JSON.`);
+        }
+    }
 
     const outputFilesCreated = [];
 
@@ -69,21 +84,20 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
             if (fileName.includes("*")) {
                 const files = glob.sync(sourceFolder + fileName, {})
 
-                const localGlobFileArray = files.map(globFile => {
-                    const fileNameReplaced = globFile.replace(/^.*[\\\/]/, '')
-                    const filePathJoined = buildFolderPath(globFile.split('/'));
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const fileNameReplaced = file.replace(/^.*[\\\/]/, '')
+                    const filePathJoined = buildFolderPath(file.split('/'));
 
                     const obj = {
                         targetLanguage: language,
                         sourceFileName: fileNameReplaced,
-                        sourceFilePath: globFile,
+                        sourceFilePath: file,
                         distFilePath: sourceFolder + dist.dist.replace('{language}', language),
                         distFileName: filePathJoined
                     }
-                    localArray.push(obj) 
-                    return obj;
-                })
-                localArray.push(localGlobFileArray[0])
+                    localArray.push(obj)
+                }
             } else {
                 localArray.push({
                     targetLanguage: language,
@@ -93,12 +107,13 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
                     distFileName: fileName
                 })
             }
-            return localArray[0];
+            return localArray;
         })
         return filesArray
     })
 
     const flattenedPayload = [].concat.apply([], payload);
+    const flattenedAgainPayload = [].concat.apply([], flattenedPayload);
 
     // For each payload object...
         // Load source file into JSDOM
@@ -113,7 +128,7 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     const translationFileArray = [];
             
     await Promise.all(
-        flattenedPayload.map(async (payloadObject) => {
+        flattenedAgainPayload.map(async (payloadObject) => {
             const thisFileContent = await loadData(payloadObject.sourceFilePath);
             const thisVirtualDom = new JSDOM(thisFileContent);
             const thisVirtualNode = thisVirtualDom.window.document.getElementsByTagName('t');
@@ -123,8 +138,20 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
                 thisNodeArray.map(async (thisNode) => {
                     const uniqueId = shortid.generate();
                     const ENGLISH_STRING = thisNode.innerHTML;
-                    let TRANSLATED_STRING = await translate(ENGLISH_STRING, { to: payloadObject.targetLanguage });
-                    let transaltedStringReplaced = await replaceTranslationData(TRANSLATED_STRING)
+
+                    let transaltedStringReplaced;
+
+                    if (existingTranslationFile) {
+                        const thisTranslationObject = existingTranslationFile.filter(translationFileObject => {
+                            return translationFileObject.en === ENGLISH_STRING;
+                        })[0]
+                        // TODO: Add duplicate detection here... remove [0] above...
+                        transaltedStringReplaced = thisTranslationObject[payloadObject.targetLanguage]
+                    } else {
+                        const TRANSLATED_STRING = await translate(ENGLISH_STRING, { to: payloadObject.targetLanguage });
+                        transaltedStringReplaced = await replaceTranslationData(TRANSLATED_STRING)
+                    }
+
 
                     thisNode.classList.add(uniqueId)
                     thisNode.innerHTML = transaltedStringReplaced
@@ -165,7 +192,9 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
 
     const mergedArray = mergeObjectsInUnique(translationFileArray, 'en');
 
-    await storeData(mergedArray, 'translations.json');
+    if (!existingTranslationFile) {
+        await storeData(mergedArray, translationFile);
+    }
     
     // Return files created for user
     return `

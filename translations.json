@@ -1,26 +1,50 @@
 [
     {
-        "id": "ii8n-9xFNBzL3Y",
-        "_src": "./src/index.html",
-        "_dist": "./dist/fr/index.html",
-        "en": "Hello, my name is Adam",
-        "es": "Hola mi nombre es Adam",
-        "fr": "Bonjour mon nom est adam"
+        "_src": "./test-src/views/About.svelte",
+        "_dist": "./test-src/__generated__/fr/views/About.svelte",
+        "id": "FYtHMS5BqB",
+        "en": "About Page",
+        "es": "Sobre la página",
+        "fr": "À propos de la page"
     },
     {
-        "id": "ii8n-FT2nq3e1ZI",
-        "_src": "./src/index.html",
-        "_dist": "./dist/es/index.html",
-        "en": "Welcome to my site.",
-        "fr": "Bienvenue sur mon site.",
-        "es": "Bienvenido a mi sitio."
+        "_src": "./test-src/views/Home.svelte",
+        "_dist": "./test-src/__generated__/fr/views/Home.svelte",
+        "id": "1g1WuTy-Pj",
+        "en": "Home Page",
+        "es": "Página de inicio",
+        "fr": "Page d'accueil"
     },
     {
-        "id": "ii8n-Np3cPBWus0",
-        "_src": "./src/index.html",
-        "_dist": "./dist/fr/index.html",
-        "en": "This is another string with <span>html</span>",
-        "es": "Esta es otra cadena con <span> html </span>",
-        "fr": "Ceci est une autre chaîne avec <span> html </span>"
+        "_src": "./test-src/components/Header.svelte",
+        "_dist": "./test-src/__generated__/fr/components/Header.svelte",
+        "id": "tGpoBbu9-X",
+        "en": "Welcome",
+        "es": "Bienvenidos",
+        "fr": "Bienvenue"
+    },
+    {
+        "_src": "./test-src/App.svelte",
+        "_dist": "./test-src/__generated__/fr/App.svelte",
+        "id": "5GCoWFInk",
+        "en": "Hello my name is ${name}, nice to meet you!",
+        "es": "Hola, mi nombre es ${name}. ¡Mucho gusto!",
+        "fr": "Bonjour mon nom est ${name}, ravi de vous rencontrer!"
+    },
+    {
+        "_src": "./test-src/App.svelte",
+        "_dist": "./test-src/__generated__/es/App.svelte",
+        "id": "J6I7I99HVW",
+        "en": "Visit the <a href=\"https://svelte.dev/tutorial\">Svelte tutorial</a> to learn how to build Svelte apps.",
+        "fr": "Consultez le <a href=\"https://svelte.dev/tutorial\">didacticiel Svelte</a> pour savoir comment créer des applications Svelte.",
+        "es": "Visite el <a href=\"https://svelte.dev/tutorial\">tutorial de Svelte</a> para aprender a crear aplicaciones de Svelte."
+    },
+    {
+        "_src": "./test-src/components/Footer.svelte",
+        "_dist": "./test-src/__generated__/es/components/Footer.svelte",
+        "id": "FaV1Fgm3AW",
+        "en": "Goodbye",
+        "fr": "Au revoir",
+        "es": "Adiós"
     }
 ]
