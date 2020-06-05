@@ -19,9 +19,6 @@
 * Run the program with `node index.js`
 * Explore `__generated__` folder with your translated source files.
 
-
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
-
 ---
 
 # svelte app 
