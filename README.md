@@ -51,6 +51,9 @@ Becomes...
 </header>
 ```
 
+The package also produces a JSON file with your translations, so you may use custom translations after initial run. 
+
+See the full [example folder](./example/)
 
 ## Requirements
 * Node.js
