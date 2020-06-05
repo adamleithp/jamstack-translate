@@ -203,3 +203,5 @@ Svelte splits elements apart on compile, so in order to a dynamic string inside 
 - [x] Test Svelte.js cli starter
 - [ ] Test Vue.js cli starter
 - [ ] Test React.js cli starter
+- [x] Framework agnostic
+- [ ] Typescript
