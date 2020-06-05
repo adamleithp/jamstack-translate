@@ -18,7 +18,6 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^0.4.4",
-    "translate": "file:../node-translate"
+    "sirv-cli": "^0.4.4"
   }
 }
