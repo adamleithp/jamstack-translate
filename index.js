@@ -116,6 +116,10 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     const flattenedPayload = [].concat.apply([], payload);
     const flattenedAgainPayload = [].concat.apply([], flattenedPayload);
 
+
+    console.log('flattenedAgainPayload :>> ', flattenedAgainPayload);
+    return;
+    
     // For each payload object...
         // Load source file into JSDOM
         // Get all <t>,
