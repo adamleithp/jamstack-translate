@@ -62,7 +62,8 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     const translationFile = options.translationFile ? options.translationFile : './translations.json';
     const loadCustomTranslations = options.loadCustomTranslation ? options.loadCustomTranslation : false;
     let stringNotFound = false;
-
+    const src = folderStructure[0];
+    const dist = folderStructure[1];
     let existingTranslationFile = null;
 
     if (loadCustomTranslations) {
@@ -77,8 +78,6 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     const outputFilesCreated = [];
 
     const payload = targetLanguages.map(language => {
-        const src = folderStructure[0];
-        const dist = folderStructure[1];
         const filesArray = src.src.map(fileName => {
             const localArray = []
 
@@ -94,7 +93,7 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
                         targetLanguage: language,
                         sourceFileName: fileNameReplaced,
                         sourceFilePath: file,
-                        distFilePath: sourceFolder + dist.dist.replace('{language}', language),
+                        distFilePath: `${sourceFolder}${dist.dist}${language}`,
                         distFileName: filePathJoined
                     }
                     localArray.push(obj)
@@ -104,7 +103,7 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
                     targetLanguage: language,
                     sourceFileName: fileName,
                     sourceFilePath: sourceFolder + fileName,
-                    distFilePath: sourceFolder + dist.dist.replace('{language}', language),
+                    distFilePath: `${sourceFolder}${dist.dist}${language}`,
                     distFileName: fileName
                 })
             }
@@ -117,9 +116,7 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     const flattenedAgainPayload = [].concat.apply([], flattenedPayload);
 
 
-    console.log('flattenedAgainPayload :>> ', flattenedAgainPayload);
-    return;
-    
+
     // For each payload object...
         // Load source file into JSDOM
         // Get all <t>,
@@ -134,6 +131,18 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
             
     await Promise.all(
         flattenedAgainPayload.map(async (payloadObject) => {
+
+            // Create __generated__ if it doesn't exist
+            if (!fs.existsSync(`${sourceFolder}${dist.dist}`)) {
+                fs.mkdirSync(`${sourceFolder}${dist.dist}`);
+            }
+
+            // Create __generated__/{language} if it doesn't exist
+            if (!fs.existsSync(`${sourceFolder}${dist.dist}${payloadObject.targetLanguage}/`)) {
+                fs.mkdirSync(`${sourceFolder}${dist.dist}${payloadObject.targetLanguage}/`);
+                outputFilesCreated.push(`${sourceFolder}${dist.dist}${payloadObject.targetLanguage}/`)
+            }
+
             const thisFileContent = await loadData(payloadObject.sourceFilePath);
             const thisVirtualDom = new JSDOM(thisFileContent);
             const thisVirtualNode = thisVirtualDom.window.document.getElementsByTagName('t');
@@ -218,7 +227,7 @@ module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStruct
     
     // Return files created for user
     return `
-Files created:
+Files/Folders created:
 ./translations.json
 ${outputFilesCreated.join('\n')}
     `;

@@ -26,7 +26,7 @@ const folderStructure = [
     ]
   },
   {
-    dist: '__generated__/{language}/'
+    dist: '__generated__/'
   }
 ]
 
