@@ -198,9 +198,10 @@ Svelte splits elements apart on compile, so in order to a dynamic string inside 
 - [x] Proof of concept with only HTML files (`index.html` => `fr/index.html`)
 - [x] Parse target folder (src) for all <t> tags.
 - [x] Build JSON file of translations from English
-- [x] Copy `src/` to `dist/${lang}/`
-- [x] Replace each `dist/${lang}/` with their translations.
+- [x] Copy `src/` to `src/__generated__/${lang}/`
+- [x] Replace each `src/__generated__/${lang}/` with their translations.
 - [x] Clean up translation.json file, duplicates in there.
+- [x] Generate `__generated__` folder, and language folders inside.
 - [ ] Include a raw copy of other folders which aren't translated or update links to original source files.
 - [ ] Allow `<title>` translations, as this is parsed as a string inside the html. Do replace?
 - [x] Reimplement loading of already generated translation.json file
