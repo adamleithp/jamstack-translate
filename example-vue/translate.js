@@ -12,39 +12,25 @@
 require('dotenv').config()
 const translate = require('../index.js');
 
-const targetLanguages = [
-  'fr',
-  'es',
-]
-const sourceFolder = './src/'
-const folderStructure = [
-  {
-    src: [
-      './src/App.vue',
-      './src/components/**/*.vue',
-      './src/views/**/*.vue',
-    ]
-  },
-  {
-    dist: './src/__generated__/'
-  }
-]
-
-const options = {
+const GOOGLEKEY = process.env.GOOGLE_API_KEY
+const OPTIONS = {
+  targetLanguages: [
+    'fr',
+    'es',
+  ],
+  targetFiles: [
+    './src/App.vue',
+    './src/components/**/*.vue',
+    './src/views/**/*.vue',
+  ],
+  targetDirectory: './src/__generated__/',
+  sourceDirectory: './src/',
   translationFile: './translations.json',
-  loadCustomTranslation: false,
-  uniqueIdsForDomElements: false,
+  loadTranslationsFromFile: true,
 }
 
-const GOOGLEKEY = process.env.GOOGLE_API_KEY
-
 const init = async () => {
-  const result = await translate(GOOGLEKEY, {
-    targetLanguages,
-    sourceFolder,
-    folderStructure,
-    options,
-  });
+  const result = await translate(GOOGLEKEY, OPTIONS);
   console.log(result);
 }
 

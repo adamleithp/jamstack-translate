@@ -151,24 +151,43 @@ const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguag
     return generatedFiles;
 }
 
-module.exports = async (GOOGLEKEY, { targetLanguages, sourceFolder, folderStructure, options }) => {
+
+module.exports = async (GOOGLEKEY, { targetLanguages, targetFiles, targetDirectory, sourceDirectory, translationFile, loadTranslationsFromFile }) => {
     translate.key = GOOGLEKEY;
-    const src = folderStructure[0].src;
-    const dist = folderStructure[1].dist;
+
+    // Defaults
+    const TARGET_LANGUAGES = targetLanguages;
+    const TARGET_FILES = targetFiles;
+    const TARGET_DIRECTORY = targetDirectory;
+    const SOURCE_DIRECTORY = sourceDirectory;
+    const TRANSLATION_FILE = translationFile ? translationFile : './translations.json';
+    const LOAD_TRANSLATIONS_FROM_FILE = loadTranslationsFromFile ? loadTranslationsFromFile : false;
 
     // Get files,
-    const files = await getFilesFromSource(src)
-    
+    const files = await getFilesFromSource(TARGET_FILES)
+
     // Get strings from file contents
     const filesWithStrings = await getFilesStrings(files)
 
-    // Translate each string
-    const filesWithTranslatedStrings = await getFilesStringsTranslated(filesWithStrings, targetLanguages)
-    
+    // Get translations array
+    let filesWithTranslatedStrings;
+    if (LOAD_TRANSLATIONS_FROM_FILE) {
+        // Load existing translation JSON file
+        const fileContent = await loadData(TRANSLATION_FILE)
+        filesWithTranslatedStrings = JSON.parse(fileContent)
+    } else {
+        // Get translation array
+        filesWithTranslatedStrings = await getFilesStringsTranslated(filesWithStrings, TARGET_LANGUAGES)
+    }
+
     // Create file from strings for each language
-    const createdFiles = await generateTranslatedFiles(filesWithTranslatedStrings, targetLanguages, sourceFolder, dist)
-    
+    const createdFiles = await generateTranslatedFiles(filesWithTranslatedStrings, TARGET_LANGUAGES, SOURCE_DIRECTORY, TARGET_DIRECTORY)
+
+    // Create JSON file, only if we don't load an existing translation file
+    if (!LOAD_TRANSLATIONS_FROM_FILE) {
+        await storeData(filesWithTranslatedStrings, TRANSLATION_FILE);
+    }
+
     // Return files created
     return createdFiles;
 }
-
