@@ -49,8 +49,7 @@ const getFilesStrings = async (filesArray) => {
 
             let keys = [];
             const regex = /\<t\>(.*?)\<\/t\>/g
-            let match
-            // console.log('fileContent.match(regex) :>> ', fileContent.match(regex));
+            let match;
 
             while ((match = regex.exec(fileContent))) {
                 const newMatch = match
@@ -58,7 +57,7 @@ const getFilesStrings = async (filesArray) => {
                     // .split('\',')[0]
                     // .replace(/['"]+/g, '"') 
                     // .trim()
-                console.log('match :>> ', newMatch);
+                // console.log('match :>> ', newMatch);
                 keys.push(newMatch);
             }
 
@@ -73,7 +72,6 @@ const getFilesStrings = async (filesArray) => {
             }
         })
     )
-    console.log('filesWithStrings :>> ', filesWithStrings);
     return filesWithStrings
 }
 
@@ -121,16 +119,21 @@ const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguag
                 let fileContent = await loadData(filePath);
                 
                 const translatedFile = filesWithTranslatedStrings.map((translatedObject) => {
-                    const regex = new RegExp(translatedObject['en'], "g");
-                    console.log('match2 :>> ', fileContent.match(regex));
+                    // Build regex, also escape string literals
+                    const regex = new RegExp(translatedObject.en.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "g"); 
+
                     fileContent = fileContent
+                        // Replace content with trsanslated string
                         .replace(regex, translatedObject[language])
+                        // Fix spaced string literals (make this an option)
+                        .replace('$ {', '${')
                     return fileContent;
                 })
 
+                
                 // Get last mapped of array (the fully translated item)
                 const newFileContent = translatedFile.pop()
-
+                
                 // Create folder if it doesn't exist
                 if (!fs.existsSync(`${newFilePath}`)) {
                     fs.mkdirSync(`${newFilePath}`, { recursive: true });

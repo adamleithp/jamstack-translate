@@ -20,7 +20,7 @@ const sourceFolder = './src/'
 const folderStructure = [
   {
     src: [
-      './src/App.svelte',
+      './src/*.svelte',
       './src/components/**/*.svelte',
       './src/views/**/*.svelte',
     ]

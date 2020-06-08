@@ -20,6 +20,7 @@ const sourceFolder = './src/'
 const folderStructure = [
   {
     src: [
+      './src/App.vue',
       './src/components/**/*.vue',
       './src/views/**/*.vue',
     ]

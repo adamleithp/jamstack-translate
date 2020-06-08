@@ -1,12 +1,11 @@
 <script>
 	import Header from './components/Header.svelte'
 	export let name;
-
 </script>
 
 <Header/>
 <main>
-	<h1>{@html `<t>Hello my name is ${name}, nice to meet you!</t>`}</h1>
+	<h1>{@html `<t>Bonjour mon nom est ${name}, ravi de vous rencontrer!</t>`}</h1>
 	<p>{@html `<t>Consultez le <a href="https://svelte.dev/tutorial"> didacticiel Svelte </a> pour savoir comment créer des applications Svelte.</t>`}</p>
 	<input bind:value={name}>
 </main>
