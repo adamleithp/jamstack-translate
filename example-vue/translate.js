@@ -20,12 +20,12 @@ const sourceFolder = './src/'
 const folderStructure = [
   {
     src: [
-      'App.vue',
-      'components/**/*.vue'
+      './src/components/**/*.vue',
+      './src/views/**/*.vue',
     ]
   },
   {
-    dist: '__generated__/'
+    dist: './src/__generated__/'
   }
 ]
 

@@ -4,11 +4,11 @@
 
 </script>
 
-<header>
+<Header/>
 <main>
-	<h1>{@html `<t>Hola, mi nombre es ${name}. ¡Mucho gusto!</t>`}</h1>
-	<p>{@html `<t>Visite el <a href="https://svelte.dev/tutorial">tutorial de Svelte</a> para aprender a crear aplicaciones de Svelte.</t>`}</p>
-	<input bind:value="{name}">
+	<h1>{@html `<t>Hello my name is ${name}, nice to meet you!</t>`}</h1>
+	<p>{@html `<t>Visite el <a href="https://svelte.dev/tutorial"> tutorial de Svelte </a> para aprender a crear aplicaciones de Svelte.</t>`}</p>
+	<input bind:value={name}>
 </main>
 
 <style>
@@ -31,4 +31,4 @@
 			max-width: none;
 		}
 	}
-</style></header>
+</style>

@@ -20,13 +20,13 @@ const sourceFolder = './src/'
 const folderStructure = [
   {
     src: [
-      'App.svelte',
-      'components/**/*.svelte',
-      'views/**/*.svelte'
+      './src/App.svelte',
+      './src/components/**/*.svelte',
+      './src/views/**/*.svelte',
     ]
   },
   {
-    dist: '__generated__/'
+    dist: './src/__generated__/'
   }
 ]
 

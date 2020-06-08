@@ -2,9 +2,9 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      <t>For a guide and recipes on how to configure / customize this project,<br> check out the <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.</t>
+      <t>Para obtener una guía y recetas sobre cómo configurar / personalizar este proyecto,<br> check out the <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.</t>
     </p>
-    <h3><t>Installed CLI Plugins</t></h3>
+    <h3><t>Complementos de CLI instalados</t></h3>
   </div>
 </template>
 
