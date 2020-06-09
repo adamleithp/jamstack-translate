@@ -6,18 +6,18 @@
 * Create `.env` file from example `.env-example`
 * Add your google translate api key to `.env` 
 * Open `index.js`
-  * `targetLanguages`: array of desired languages (language codes)
-  * `sourceFolder`: string of where the package starts from
-  * `folderStructure:src`: array of files/folders. You can specify specific file paths, or globs.
-  * `folderStructure:dist`: string of generated file structure.
-  * `options`: 
-    * `translationFile`: file which translations can be saved to.
-    * `loadCustomTranslation`: boolean to tell the package to pull translations. **Note**: if set to true, the `translationFile` will be overwritten. 
-    * `uniqueIdsForDomElements`: boolean to generate unique classes for each `<t>` once translated. *Example if true: `<t class="Qcs-MPi0VO">Adiós</t>`*
+* Jamstack Translate takes these parameters
   * `GOOGLEKEY`: string of your google translate api key.
+  * `OPTIONS`: object
+    * `targetLanguages`: array of desired languages (language codes)
+    * `targetFiles`: array of files/folders. You can specify specific file paths, or globs.
+    * `targetDirectory`: string of generated file structure.
+    * `sourceDirectory`: string of where the package starts from
+    * `translationFile`: file which translations can be saved to / loaded from (if `loadTranslationsFromFile` is set to true)
+    * `loadTranslationsFromFile`: boolean to tell the package to pull translations from `translationFile`. **Note**: if set to `false`, whichever value of `translationFile` will be overwritten. 
 
-* Run the program with `node index.js`
-* Explore `__generated__` folder with your translated source files.
+* Run the program with `node translate.js`
+* Explore your specified `targetDirectory` folder with your translated source files.
 
 ---
 

@@ -53,7 +53,7 @@ Becomes...
 
 The package also produces a JSON file with your translations, so you may use custom translations after initial run. 
 
-See the full [example folder](./example/)
+See the [example folder](./example/) for how your project can look.
 
 ## Requirements
 * Node.js
@@ -66,45 +66,32 @@ Note: View our `example` folder for a complete working example.
 
 ```javascript
 require('dotenv').config()
-const translate = require('jamstack-translate');
-
-const targetLanguages = [
-  'fr',
-  'es',
-]
-const sourceFolder = './src/'
-const folderStructure = [
-  {
-    src: [
-      'App.svelte',
-      'components/**/*.svelte',
-      'views/**/*.svelte'
-    ]
-  },
-  {
-    dist: '__generated__/{language}/'
-  }
-]
-
-const options = {
-  translationFile: './translations.json',
-  loadCustomTranslation: false,
-  uniqueIdsForDomElements: false,
-}
+const translate = require('../index.js');
 
 const GOOGLEKEY = process.env.GOOGLE_API_KEY
+const OPTIONS = {
+  targetLanguages: [
+    'fr',
+    'es',
+  ],
+  targetFiles: [
+    './src/App.svelte',
+    './src/components/**/*.svelte',
+    './src/views/**/*.svelte',
+  ],
+  targetDirectory: './src/__generated__/',
+  sourceDirectory: './src/',
+  translationFile: './translations.json',
+  loadTranslationsFromFile: true,
+}
 
 const init = async () => {
-  const result = await translate(GOOGLEKEY, {
-    targetLanguages,
-    sourceFolder,
-    folderStructure,
-    options,
-  });
+  const result = await translate(GOOGLEKEY, OPTIONS);
   console.log(result);
 }
 
 init();
+
 ```
 
 ## Usage with JS frameworks
@@ -195,21 +182,24 @@ Svelte splits elements apart on compile, so in order to a dynamic string inside 
 
 
 ## TODO
-- [x] Proof of concept with only HTML files (`index.html` => `fr/index.html`)
+- [x] Test static HTML files (`index.html` => `fr/index.html`)
 - [x] Parse target folder (src) for all <t> tags.
-- [x] Build JSON file of translations from English
+- [x] Build JSON file of output.
+- [x] Load JSON file for input.
 - [x] Copy `src/` to `src/__generated__/${lang}/`
 - [x] Replace each `src/__generated__/${lang}/` with their translations.
 - [x] Clean up translation.json file, duplicates in there.
 - [x] Generate `__generated__` folder, and language folders inside.
-- [ ] Include a raw copy of other folders which aren't translated or update links to original source files.
+- [x] Refactor, ready for tests
+- [ ] Copy of other folders (non translated) into `dist`.
 - [ ] Allow `<title>` translations, as this is parsed as a string inside the html. Do replace?
-- [x] Reimplement loading of already generated translation.json file
-- [x] Test Svelte.js cli starter
-- [ ] Test Vue.js cli starter
 - [ ] Test React.js cli starter
 - [x] Framework agnostic
-- [ ] Typescript
+- [x] Test Svelte.js cli starter
+- [x] Test Vue.js cli starter
+- [ ] Typescript Support
 - [ ] Tests
+
+## Stretch goals
 - [ ] Look into an "escape keywork" for variables. Without handlebar variable ${var}, google translate can transform our variables: `{name}` becomes `{nombre}` etc.
   - [ ] Triple underscore idea: `<t>Hello ___{name}___</t>` => `<t>Hola {name}</t>`
