@@ -57,7 +57,6 @@ const getFilesStrings = async (filesArray) => {
                     // .split('\',')[0]
                     // .replace(/['"]+/g, '"') 
                     // .trim()
-                // console.log('match :>> ', newMatch);
                 keys.push(newMatch);
             }
 
