@@ -1,15 +1,16 @@
 
 # jamstack-translate
 
-#### Generate static translations for any front end project.
+### Generate static translations for any front end project.
 Google Translate your source folder and compile to static dist language directories without writing convoluted references to json files... I hate i18n libraries so much, here is my personal fix.
 
 
 #### What does this package do?
 Create static translated copies of any source folder in your project, then simply load that translated html/bundle on load.
 
-Options are below.
+Here we can see an example. Simply wrap all strings you wish to translate inside a `<t>Some String</t>`, and run the application. 
 
+##### Before...
 ```
 .
 ├── src
@@ -19,7 +20,13 @@ Options are below.
 |   └── main.js
 ```
 
-Becomes...
+```
+<header>
+  <t>Welcome</t>
+</header>
+```
+
+##### After...
 ```
 .
 ├── src
@@ -37,32 +44,35 @@ Becomes...
 |   └── App.svelte
 |   └── main.js
 ```
-
-##### src/Components/Header.svelte
-```
-<header>
-  <t>Welcome</t>
-</header>
-```
-##### src/__generated__/fr/components/Header.svelte
 ```
 <header>
   <t>Bienvenue</t>
 </header>
 ```
 
+
 The package also produces a JSON file with your translations, so you may use custom translations after initial run. 
 
-See the [example folder](./example/) for how your project can look.
+```json
+    {
+        "_src": "./src/components/Header.svelte",
+        "_dist": "./src/__generated__/fr/components/Header.svelte",
+        "en": "Welcome",
+        "es": "Bienvenidos",
+        "fr": "Bienvenue"
+    },
+```
+
+This file allows version control of your translations, also allows easy A/B for your translations quite easily.
+
+See the [Example Svelte.js](./example-svelte) or [Example Vue.js](./example-vue) for how your project can look.
 
 ## Requirements
-* Node.js
+* Node.js > 10
 * Google Cloud Translate account + API Key
 
 ## Getting started
 `npm install --save-dev jamstack-translate`
-
-Note: View our `example` folder for a complete working example.
 
 ```javascript
 require('dotenv').config()
@@ -95,6 +105,12 @@ init();
 ```
 
 ## Usage with JS frameworks
+
+#### TLDR
+For every new language folder you create, create a new entry file (multi input) for your application and point the respective imports to their lanuage folder. Then, in your `index.html` file, dynamically load your `bundle.js` depending on your method of choosing languages (I prefer URL parameters `?lng={language}`).
+
+
+### Full Example
 *Note: Below is with Rollup/Svelte v3, other docs for webpack etc. will coming soon.*
 
 #### Entry files
@@ -110,7 +126,7 @@ Create new main.js files for each new langauge,
 
 Edit each new main file, and point to your new entry file
 
-// `main-fr.js`
+`main-fr.js`
 ```javascript
 import App from './__generated__/fr/App.svelte';
 
@@ -128,7 +144,7 @@ export default app;
 
 Generate a new bundle for each main file
 
-// `Rollup.config.js`
+`Rollup.config.js`
 ```javascript
 //...
 import multiInput from 'rollup-plugin-multi-input';
