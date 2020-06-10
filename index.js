@@ -84,6 +84,31 @@ const mergeObjectsInUnique = (array, property) => {
     return Array.from(newArray.values());
 }  
 
+// Find all words inside {}, add 'X' at substring 2, 
+const changeVariables = (stringToReplace) => {
+    const regex = /{([^}]*)}/g;
+    let matches = stringToReplace.matchAll(regex);
+
+    for (let match of matches) {
+        const newMatch = match[0]
+        stringToReplace = stringToReplace.replace(newMatch, newMatch.substring(0, 2) + 'X' + newMatch.substring(2))
+    }
+    return stringToReplace;
+}
+
+// Find all words inside {}, remove 'X' at substring 2, 
+const restoreVariables = (stringToReplace) => {
+    const regex = /{([^}]*)}/g;
+    let matches = stringToReplace.matchAll(regex);
+
+    for (let match of matches) {
+        const newMatch = match[0]
+        stringToReplace = stringToReplace.replace(newMatch, newMatch.substring(0, 2) + newMatch.substring(3))
+    }
+    return stringToReplace;
+}
+
+
 const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages) => {
     const filesWithTranslatedStrings = [];
 
@@ -91,7 +116,17 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
         filesArrayWithStrings.map(async (file) => {
 
             await asyncForEach(targetLanguages, async (language) => {
-                const translatedString = await translate(file.en, { to: language });
+
+                // Temporarily obfuscate strings inside {}, so they're not translated,
+                // make {name} => {nXame}
+                const englishStringWithChangedVariables = changeVariables(file.en);
+                // translate obfuscate strings
+                let translatedString = await translate(englishStringWithChangedVariables, { to: language });
+                // then reverse
+                // make {nXame} => {name}
+                const translatedStringWithRestoredVariables = restoreVariables(translatedString);
+                translatedString = translatedStringWithRestoredVariables
+
                 const object = {
                     file: file.file,
                     en: file.en,

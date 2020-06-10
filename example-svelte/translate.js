@@ -17,7 +17,7 @@ const OPTIONS = {
   targetDirectory: './src/__generated__/',
   sourceDirectory: './src/',
   translationFile: './translations.json',
-  loadTranslationsFromFile: true,
+  loadTranslationsFromFile: false,
 }
 
 const init = async () => {
