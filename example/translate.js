@@ -4,18 +4,15 @@ const translate = require('../index.js');
 const GOOGLEKEY = process.env.GOOGLE_API_KEY
 const OPTIONS = {
   targetLanguages: [
-    'fr',
     'es',
   ],
   targetFiles: [
-    './src/App.vue',
-    './src/components/**/*.vue',
-    './src/views/**/*.vue',
+    './src/index.html',
   ],
   targetDirectory: './src/__generated__/',
   sourceDirectory: './src/',
   translationFile: './translations.json',
-  loadTranslationsFromFile: true,
+  loadTranslationsFromFile: false,
 }
 
 const init = async () => {

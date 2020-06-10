@@ -107,6 +107,7 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
 }
 
 const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguages, sourceFolder, distFolder) => {
+    console.log('filesWithTranslatedStrings :>> ', filesWithTranslatedStrings);
     const uniqueFiles = [...new Set(filesWithTranslatedStrings.map(obj => obj.file))];
     const generatedFiles = []
     await Promise.all(
@@ -119,16 +120,16 @@ const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguag
                 
                 const translatedFile = filesWithTranslatedStrings.map((translatedObject) => {
                     // Build regex, also escape string literals
-                    const regex = new RegExp(translatedObject.en.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "g"); 
+                    // const regex = new RegExp(translatedObject.en.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "g"); 
+                    let englishString = `<t>${translatedObject.en}</t>`;
 
                     fileContent = fileContent
                         // Replace content with trsanslated string
-                        .replace(regex, translatedObject[language])
+                        .replace(englishString, `<t>${translatedObject[language]}</t>`)
                         // Fix spaced string literals (make this an option)
                         .replace('$ {', '${')
                     return fileContent;
                 })
-
                 
                 // Get last mapped of array (the fully translated item)
                 const newFileContent = translatedFile.pop()
@@ -178,6 +179,8 @@ module.exports = async (GOOGLEKEY, { targetLanguages, targetFiles, targetDirecto
         // Get translation array
         filesWithTranslatedStrings = await getFilesStringsTranslated(filesWithStrings, TARGET_LANGUAGES)
     }
+
+    if (!filesWithTranslatedStrings && LOAD_TRANSLATIONS_FROM_FILE) return 'Please choose a translation file to load.' 
 
     // Create file from strings for each language
     const createdFiles = await generateTranslatedFiles(filesWithTranslatedStrings, TARGET_LANGUAGES, SOURCE_DIRECTORY, TARGET_DIRECTORY)

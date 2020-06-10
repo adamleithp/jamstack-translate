@@ -1,0 +1,22 @@
+[
+    {
+        "file": "./src/index.html",
+        "en": "Translate this",
+        "es": "Traduce esto"
+    },
+    {
+        "file": "./src/index.html",
+        "en": "email",
+        "es": "correo electrónico"
+    },
+    {
+        "file": "./src/index.html",
+        "en": "Email",
+        "es": "Correo electrónico"
+    },
+    {
+        "file": "./src/index.html",
+        "en": "Email {email}, ${email}",
+        "es": "Correo electrónico {correo electrónico}, $ {correo electrónico}"
+    }
+]
