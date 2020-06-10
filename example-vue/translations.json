@@ -1,44 +1,44 @@
 [
     {
-        "file": "./src/components/HelloWorld.vue",
+        "_file": "./src/App.vue",
+        "en": "Welcome to Your Vue.js App",
+        "es": "Bienvenido a la aplicación Your Vue.js",
+        "fr": "Bienvenue dans votre application Vue.js"
+    },
+    {
+        "_file": "./src/components/HelloWorld.vue",
+        "en": "For a guide and recipes on how to configure / customize this project,<br> check out the <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\">vue-cli documentation</a>.",
+        "es": "Para obtener una guía y recetas sobre cómo configurar / personalizar este proyecto, consulte la <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\"> documentación vue-cli </a>.",
+        "fr": "Pour un guide et des recettes sur la façon de configurer / personnaliser ce projet, <br> consultez la <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\"> documentation vue-cli </a>."
+    },
+    {
+        "_file": "./src/components/HelloWorld.vue",
         "en": "Installed CLI Plugins",
         "es": "Complementos de CLI instalados",
         "fr": "Plugins CLI installés"
     },
     {
-        "file": "./src/components/SecondComponent.vue",
+        "_file": "./src/components/SecondComponent.vue",
         "en": "Second component with <strong>some html in it</strong>",
         "es": "Segundo componente con <strong> algo de HTML en él </strong>",
         "fr": "Deuxième composant contenant <strong> du code HTML </strong>"
     },
     {
-        "file": "./src/views/About.vue",
-        "en": "Welcome to the about page",
-        "es": "Bienvenido a la página acerca de",
-        "fr": "Bienvenue sur la page à propos"
-    },
-    {
-        "file": "./src/App.vue",
-        "en": "Welcome to Your Vue.js App",
-        "es": "CUSTOM",
-        "fr": "Bienvenue dans votre application Vue.js"
-    },
-    {
-        "file": "./src/views/Home.vue",
-        "en": "Home",
-        "es": "Casa",
-        "fr": "Accueil"
-    },
-    {
-        "file": "./src/views/About.vue",
+        "_file": "./src/views/About.vue",
         "en": "About Page",
         "es": "Sobre la página",
         "fr": "À propos de la page"
     },
     {
-        "file": "./src/components/HelloWorld.vue",
-        "en": "For a guide and recipes on how to configure / customize this project,<br> check out the <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\">vue-cli documentation</a>.",
-        "es": "Para obtener una guía y recetas sobre cómo configurar / personalizar este proyecto, consulte la <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\"> documentación vue-cli </a>.",
-        "fr": "Pour un guide et des recettes sur la façon de configurer / personnaliser ce projet, <br> consultez la <a href=\"https://cli.vuejs.org\" target=\"_blank\" rel=\"noopener\"> documentation vue-cli </a>."
+        "_file": "./src/views/About.vue",
+        "en": "Welcome to the about page",
+        "es": "Bienvenido a la página acerca de",
+        "fr": "Bienvenue sur la page à propos"
+    },
+    {
+        "_file": "./src/views/Home.vue",
+        "en": "Home",
+        "es": "Casa",
+        "fr": "Accueil"
     }
 ]

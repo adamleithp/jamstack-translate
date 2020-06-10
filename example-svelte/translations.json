@@ -1,44 +1,44 @@
 [
     {
-        "file": "./src/App.svelte",
+        "_file": "./src/App.svelte",
         "en": "Hello my name is ${name}, nice to meet you!",
         "es": "Hola, mi nombre es $ {name}. ¡Mucho gusto!",
         "fr": "Bonjour mon nom est $ {name}, ravi de vous rencontrer!"
     },
     {
-        "file": "./src/App.svelte",
+        "_file": "./src/App.svelte",
+        "en": "Visit the <a href=\"https://svelte.dev/tutorial\">Svelte tutorial</a> to learn how to build Svelte apps.",
+        "es": "Visite el <a href=\"https://svelte.dev/tutorial\"> tutorial de Svelte </a> para aprender a crear aplicaciones de Svelte.",
+        "fr": "Consultez le <a href=\"https://svelte.dev/tutorial\"> didacticiel Svelte </a> pour savoir comment créer des applications Svelte."
+    },
+    {
+        "_file": "./src/App.svelte",
         "en": "email {email}",
         "es": "correo electrónico {email}",
         "fr": "e-mail {email}"
     },
     {
-        "file": "./src/views/Home.svelte",
-        "en": "Home Page",
-        "es": "Página de inicio",
-        "fr": "Page d'accueil"
-    },
-    {
-        "file": "./src/components/Header.svelte",
-        "en": "Welcome",
-        "es": "Bienvenidos",
-        "fr": "Bienvenue"
-    },
-    {
-        "file": "./src/views/About.svelte",
-        "en": "About Page",
-        "es": "Sobre la página",
-        "fr": "À propos de la page"
-    },
-    {
-        "file": "./src/components/Footer.svelte",
+        "_file": "./src/components/Footer.svelte",
         "en": "Goodbye",
         "es": "Adiós",
         "fr": "Au revoir"
     },
     {
-        "file": "./src/App.svelte",
-        "en": "Visit the <a href=\"https://svelte.dev/tutorial\">Svelte tutorial</a> to learn how to build Svelte apps.",
-        "es": "Visite el <a href=\"https://svelte.dev/tutorial\"> tutorial de Svelte </a> para aprender a crear aplicaciones de Svelte.",
-        "fr": "Consultez le <a href=\"https://svelte.dev/tutorial\"> didacticiel Svelte </a> pour savoir comment créer des applications Svelte."
+        "_file": "./src/components/Header.svelte",
+        "en": "Welcome",
+        "es": "Bienvenidos",
+        "fr": "Bienvenue"
+    },
+    {
+        "_file": "./src/views/About.svelte",
+        "en": "About Page",
+        "es": "Sobre la página",
+        "fr": "À propos de la page"
+    },
+    {
+        "_file": "./src/views/Home.svelte",
+        "en": "Home Page",
+        "es": "Página de inicio",
+        "fr": "Page d'accueil"
     }
 ]

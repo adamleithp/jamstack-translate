@@ -1,22 +1,37 @@
 [
     {
-        "file": "./src/index.html",
+        "_file": "./src/index.html",
+        "en": "Email {email}, ${email}",
+        "es": "Correo electrónico {email}, $ {email}"
+    },
+    {
+        "_file": "./src/index.html",
         "en": "Email",
         "es": "Correo electrónico"
     },
     {
-        "file": "./src/index.html",
+        "_file": "./src/index.html",
         "en": "Translate this",
         "es": "Traduce esto"
     },
     {
-        "file": "./src/index.html",
-        "en": "email",
-        "es": "correo electrónico"
+        "_file": "./src/index.html",
+        "en": "another",
+        "es": "otro"
     },
     {
-        "file": "./src/index.html",
-        "en": "Email {email}, ${email}",
-        "es": "Correo electrónico {email}, $ {email}"
+        "_file": "./src/index.html",
+        "en": "brother",
+        "es": "hermano"
+    },
+    {
+        "_file": "./src/index.html",
+        "en": "change",
+        "es": "cambio"
+    },
+    {
+        "_file": "./src/index.html",
+        "en": "email",
+        "es": "correo electrónico"
     }
 ]

@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const Promise = require('bluebird');
 const glob = require("glob")
+const myJsonAbc = require("jsonabc");
 const translate = require('translate');
 translate.engine = 'google';
 
@@ -128,7 +129,7 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
                 translatedString = translatedStringWithRestoredVariables
 
                 const object = {
-                    file: file.file,
+                    _file: file.file,
                     en: file.en,
                     [language]: translatedString
                 }
@@ -142,7 +143,7 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
 }
 
 const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguages, sourceFolder, distFolder) => {
-    const uniqueFiles = [...new Set(filesWithTranslatedStrings.map(obj => obj.file))];
+    const uniqueFiles = [...new Set(filesWithTranslatedStrings.map(obj => obj._file))];
     const generatedFiles = []
     await Promise.all(
         uniqueFiles.map(async (filePath) => {
@@ -224,7 +225,8 @@ module.exports = async (GOOGLEKEY, { targetLanguages, targetFiles, targetDirecto
 
     // Create JSON file, only if we don't load an existing translation file
     if (!LOAD_TRANSLATIONS_FROM_FILE) {
-        await storeData(filesWithTranslatedStrings, TRANSLATION_FILE);
+        var sortedJson = myJsonAbc.sortObj(filesWithTranslatedStrings, false);
+        await storeData(sortedJson, TRANSLATION_FILE);
     }
 
     // Return files created
