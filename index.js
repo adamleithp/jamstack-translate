@@ -48,7 +48,7 @@ const getFilesStrings = async (filesArray) => {
             const fileContent = await loadData(file);
 
             let keys = [];
-            const regex = /\<t\>(.*?)\<\/t\>/g
+            const regex = /\<t\>(.*?)\<\/t\>/g // everything inside <t></t>
             let match;
 
             while ((match = regex.exec(fileContent))) {
@@ -107,7 +107,6 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
 }
 
 const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguages, sourceFolder, distFolder) => {
-    console.log('filesWithTranslatedStrings :>> ', filesWithTranslatedStrings);
     const uniqueFiles = [...new Set(filesWithTranslatedStrings.map(obj => obj.file))];
     const generatedFiles = []
     await Promise.all(
@@ -121,10 +120,13 @@ const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguag
                 const translatedFile = filesWithTranslatedStrings.map((translatedObject) => {
                     // Build regex, also escape string literals
                     // const regex = new RegExp(translatedObject.en.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "g"); 
+
+                    // Find matching string with wrapping <t> only. Fixes bug where all instances of a word would be replaced (not wrapped)
                     let englishString = `<t>${translatedObject.en}</t>`;
 
                     fileContent = fileContent
                         // Replace content with trsanslated string
+                        // TODO: create option to remove wrapping tags here.
                         .replace(englishString, `<t>${translatedObject[language]}</t>`)
                         // Fix spaced string literals (make this an option)
                         .replace('$ {', '${')
