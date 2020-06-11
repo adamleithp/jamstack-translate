@@ -8,11 +8,12 @@ const OPTIONS = {
   ],
   targetFiles: [
     './src/index.html',
+    './src/html/**/*.html',
   ],
   targetDirectory: './src/__generated__/',
   sourceDirectory: './src/',
   translationFile: './translations.json',
-  loadTranslationsFromFile: false,
+  loadTranslationsFromFile: true,
 }
 
 const init = async () => {

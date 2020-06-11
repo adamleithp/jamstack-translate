@@ -66,7 +66,7 @@ const getFilesStrings = async (filesArray) => {
                 const string = keys[i];
 
                 filesWithStrings.push({
-                    file: file,
+                    _file: file,
                     en: string,
                 })
             }
@@ -167,7 +167,7 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
                 translatedString = fixedHTMLString
 
                 const object = {
-                    _file: file.file,
+                    _file: file._file,
                     en: file.en,
                     [language]: translatedString
                 }
@@ -182,9 +182,11 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
 
 const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguages, sourceFolder, distFolder) => {
     const uniqueFiles = [...new Set(filesWithTranslatedStrings.map(obj => obj._file))];
+    console.log('uniqueFiles :>> ', uniqueFiles);
     const generatedFiles = []
     await Promise.all(
         uniqueFiles.map(async (filePath) => {
+            console.log('filePath :>> ', filePath);
             targetLanguages.map(async (language) => {
                 const pathAfterSourceFolder = filePath.split(sourceFolder)[1];
                 const newFileDestination = `${distFolder}${language}/${pathAfterSourceFolder}`;
@@ -192,6 +194,9 @@ const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguag
                 let fileContent = await loadData(filePath);
                 
                 const translatedFile = filesWithTranslatedStrings.map((translatedObject) => {
+                    // If no translation, return raw content
+                    if (translatedObject.en === 'null') return [fileContent];
+
                     // Build regex, also escape string literals
                     // const regex = new RegExp(translatedObject.en.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), "g"); 
 
@@ -228,6 +233,23 @@ const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguag
 }
 
 
+const getFilesWithNoTranslation = async (filesArray, filesArrayWithStrings) => {
+    const filesWithNoStrings = [];
+    filesArray.map(file => {
+        filesArrayWithStrings.filter(object => {
+            if (file !== object.file) {
+                filesWithNoStrings.push({
+                    _file: file,
+                    en: 'null'
+                })
+            }
+        })
+    })
+
+    return filesWithNoStrings; 
+}
+
+
 module.exports = async (GOOGLEKEY, { targetLanguages, targetFiles, targetDirectory, sourceDirectory, translationFile, loadTranslationsFromFile }) => {
     translate.key = GOOGLEKEY;
 
@@ -242,8 +264,10 @@ module.exports = async (GOOGLEKEY, { targetLanguages, targetFiles, targetDirecto
     // Get files,
     const files = await getFilesFromSource(TARGET_FILES)
 
+    
     // Get strings from file contents
     const filesWithStrings = await getFilesStrings(files)
+    const filesWithNoStrings = await getFilesWithNoTranslation(files, filesWithStrings)
 
     // Get translations array
     let filesWithTranslatedStrings;
@@ -257,9 +281,12 @@ module.exports = async (GOOGLEKEY, { targetLanguages, targetFiles, targetDirecto
     }
 
     if (!filesWithTranslatedStrings && LOAD_TRANSLATIONS_FROM_FILE) return 'Please choose a translation file to load.' 
+    
+    const allFiles = [...filesWithTranslatedStrings, ...filesWithNoStrings]
 
     // Create file from strings for each language
-    const createdFiles = await generateTranslatedFiles(filesWithTranslatedStrings, TARGET_LANGUAGES, SOURCE_DIRECTORY, TARGET_DIRECTORY)
+    const createdFiles = await generateTranslatedFiles(allFiles, TARGET_LANGUAGES, SOURCE_DIRECTORY, TARGET_DIRECTORY)
+    // const createdFiles = await generateTranslatedFiles(filesWithTranslatedStrings, TARGET_LANGUAGES, SOURCE_DIRECTORY, TARGET_DIRECTORY)
 
     // Create JSON file, only if we don't load an existing translation file
     if (!LOAD_TRANSLATIONS_FROM_FILE) {
