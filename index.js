@@ -109,6 +109,38 @@ const restoreVariables = (stringToReplace) => {
     return stringToReplace;
 }
 
+// Find common google translation HTML errors
+const fixHtmlInTranslation = (stringToReplace) => {
+    const regexes = [
+        // From: <span class = "className">
+        // To: <span class="className">
+        {
+            from: / = /g,
+            to: '='
+        },
+        // From: <Span class="className">
+        // To: <span class="className">
+        {
+            from: /<Span/g,
+            to: '<span'
+        },
+        // TODO
+        // From: <Span class="green - text">
+        // To: <span class="green--text">
+        // {}
+    ];
+
+    for (let regex of regexes) {
+        let matches = stringToReplace.matchAll(regex.from);
+    
+        for (let match of matches) {
+            const newMatch = match[0]
+            stringToReplace = stringToReplace.replace(newMatch, regex.to)
+        }
+    }
+    return stringToReplace;
+}
+
 
 const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages) => {
     const filesWithTranslatedStrings = [];
@@ -121,12 +153,20 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
                 // Temporarily obfuscate strings inside {}, so they're not translated,
                 // make {name} => {nXame}
                 const englishStringWithChangedVariables = changeVariables(file.en);
+                
                 // translate obfuscate strings
                 let translatedString = await translate(englishStringWithChangedVariables, { to: language });
+
                 // then reverse
                 // make {nXame} => {name}
                 const translatedStringWithRestoredVariables = restoreVariables(translatedString);
                 translatedString = translatedStringWithRestoredVariables
+
+                // Fix HTML inconsistencies in html
+                const fixedHTMLString = fixHtmlInTranslation(translatedString)
+                translatedString = fixedHTMLString
+
+                console.log('translatedString :>> ', translatedString);
 
                 const object = {
                     _file: file.file,

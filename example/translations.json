@@ -1,37 +1,7 @@
 [
     {
         "_file": "./src/index.html",
-        "en": "Email {email}, ${email}",
-        "es": "Correo electrónico {email}, $ {email}"
-    },
-    {
-        "_file": "./src/index.html",
-        "en": "Email",
-        "es": "Correo electrónico"
-    },
-    {
-        "_file": "./src/index.html",
-        "en": "Translate this",
-        "es": "Traduce esto"
-    },
-    {
-        "_file": "./src/index.html",
-        "en": "another",
-        "es": "otro"
-    },
-    {
-        "_file": "./src/index.html",
-        "en": "brother",
-        "es": "hermano"
-    },
-    {
-        "_file": "./src/index.html",
-        "en": "change",
-        "es": "cambio"
-    },
-    {
-        "_file": "./src/index.html",
-        "en": "email",
-        "es": "correo electrónico"
+        "en": "Email <span class=\"text--green\">hello</span> = Another <span class=\"text-blue\">there</span>",
+        "es": "Enviar <span class=\"text - green\"> hola </span>=Otro <span class=\"text-blue\"> allí </span>"
     }
 ]
