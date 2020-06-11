@@ -6,9 +6,11 @@ Google Translate your source folder and compile to static dist language director
 
 
 #### What does this package do?
-Create static translated copies of any source folder in your project, then simply load that translated html/bundle on load.
+* Translates all strings inside `<t>Some String</t>`
+* Supports all file types.
+* Copies translated/non-translated copies of your applications files into a folder of your choice.
 
-Here we can see an example. Simply wrap all strings you wish to translate inside a `<t>Some String</t>`, and run the application. 
+Here we can see an example.
 
 ##### Before...
 ```
@@ -16,6 +18,7 @@ Here we can see an example. Simply wrap all strings you wish to translate inside
 ├── src
 |   └── components
 |   |   └── Header.svelte
+|   |   └── NoTranslations.js
 |   └── App.svelte
 |   └── main.js
 ```
@@ -34,13 +37,16 @@ Here we can see an example. Simply wrap all strings you wish to translate inside
 |   |   └── es
 |   |   |   └── components
 |   |   |   |   └── Header.svelte
+|   |   |   |   └── NoTranslations.js
 |   |   |   └── App.svelte
 |   |   └── fr
 |   |   |   └── components
 |   |   |   |   └── Header.svelte
+|   |   |   |   └── NoTranslations.js
 |   |   |   └── App.svelte
 |   └── components
 |   |   └── Header.svelte
+|   |   └── NoTranslations.js
 |   └── App.svelte
 |   └── main.js
 ```
@@ -74,6 +80,7 @@ See the [Example Svelte.js](./example-svelte) or [Example Vue.js](./example-vue)
 ## Getting started
 `npm install --save-dev jamstack-translate`
 
+Create a file in your root directory (ex: translate.js)
 ```javascript
 require('dotenv').config()
 const translate = require('../index.js');
@@ -88,6 +95,8 @@ const OPTIONS = {
     './src/App.svelte',
     './src/components/**/*.svelte',
     './src/views/**/*.svelte',
+    './src/helpers.js',
+    // etc
   ],
   targetDirectory: './src/__generated__/',
   sourceDirectory: './src/',
