@@ -101,8 +101,56 @@ const init = async () => {
 }
 
 init();
-
 ```
+---
+
+## Current Issues and best practices to things avoid
+The pacakge does some rudimentary regex/replace in order to address most issues (mostly caused by Google translate), here are those issues currenlty active and observed.
+
+For most issues, you can manually fix these issues in your created JSON file, and compile with fixes.
+
+#### CSS BEM (Modifier) classes
+ 
+Currently, this...
+```html
+<t><span class="text--green">hello</span> there</t>
+```
+Becomes...
+```html
+<t><span class="text - green">hello</span> there</t>
+```
+
+#### Single quotes when inside a JS file
+
+Currently, if you translate a string inside a JS file, like so...
+```js
+const string = '<t>Please</t>'
+```
+Becomes 
+```js
+const string = '<t>S'il vous plaît</t>'
+```
+
+Which is unnescaped, and will cause and compile/runtime error. 
+
+Best to use backticks instead of single quotes.
+```js
+const string = `<t>Please</t>`
+```
+
+If you can't use backticks, you must manually escape the single quotes created in your created JSON file, and compile with fixes. 
+```json
+[
+ {
+  _file: "file.html",
+  en: "Please",
+  fr: "S\\'il vous plaît"
+ }
+]
+```
+
+
+---
 
 ## Usage with JS frameworks
 
@@ -119,8 +167,8 @@ Create new main.js files for each new langauge,
 .
 ├── src
 |   └── App.svelte
-|   └── main-es.js <<<<
-|   └── main-fr.js <<<<
+|   └── main-es.js <<<< New
+|   └── main-fr.js <<<< New
 |   └── main.js
 ```
 
