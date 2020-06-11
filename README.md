@@ -104,7 +104,7 @@ init();
 ```
 ---
 
-## Current Issues and best practices to things avoid
+## Current Issues and best practices and how to avoid them
 The pacakge does some rudimentary regex/replace in order to address most issues (mostly caused by Google translate), here are those issues currenlty active and observed.
 
 For most issues, you can manually fix these issues in your created JSON file, and compile with fixes.
