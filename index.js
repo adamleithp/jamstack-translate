@@ -132,7 +132,7 @@ const fixHtmlInTranslation = (stringToReplace) => {
 
     for (let regex of regexes) {
         let matches = stringToReplace.matchAll(regex.from);
-    
+
         for (let match of matches) {
             const newMatch = match[0]
             stringToReplace = stringToReplace.replace(newMatch, regex.to)
@@ -165,8 +165,6 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
                 // Fix HTML inconsistencies in html
                 const fixedHTMLString = fixHtmlInTranslation(translatedString)
                 translatedString = fixedHTMLString
-
-                console.log('translatedString :>> ', translatedString);
 
                 const object = {
                     _file: file.file,
