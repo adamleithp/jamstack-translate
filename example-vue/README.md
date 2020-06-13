@@ -21,7 +21,7 @@
 ---
 
 
-# vue-starter-to-delete
+# vue-starter
 
 ## Project setup
 ```
