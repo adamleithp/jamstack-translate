@@ -8,9 +8,12 @@ Google Translate your source folder and compile to static dist language director
 #### What does this package do?
 * Translates all strings inside `<t>Some String</t>`
 * Supports all file types.
-* Copies translated/non-translated copies of your applications files into a folder of your choice.
+* Copies your source files into a generated/translated folder of your choice.
+* Generate a named JSON file with all your translations.
+* Load specified JSON file to generate files.
 
-Here we can see an example.
+
+#### Example
 
 ##### Before...
 ```
@@ -18,16 +21,24 @@ Here we can see an example.
 ├── src
 |   └── components
 |   |   └── Header.svelte
-|   |   └── NoTranslations.js
+|   |   └── NoTranslations.svelte
+|   └── helpers.js
 |   └── App.svelte
 |   └── main.js
 ```
 
-```
+```html
+<!-- ./src/components/Header.svelte -->
 <header>
   <t>Welcome</t>
 </header>
 ```
+```javascript
+// ./src/helpers.js
+const string = `<t>Welcome to ${name}</t>`
+```
+
+
 
 ##### After...
 ```
@@ -37,39 +48,55 @@ Here we can see an example.
 |   |   └── es
 |   |   |   └── components
 |   |   |   |   └── Header.svelte
-|   |   |   |   └── NoTranslations.js
+|   |   |   |   └── NoTranslations.svelte
+|   |   |   └── helpers.js
 |   |   |   └── App.svelte
 |   |   └── fr
 |   |   |   └── components
 |   |   |   |   └── Header.svelte
-|   |   |   |   └── NoTranslations.js
+|   |   |   |   └── NoTranslations.svelte
+|   |   |   └── helpers.js
 |   |   |   └── App.svelte
 |   └── components
 |   |   └── Header.svelte
 |   |   └── NoTranslations.js
+|   └── helpers.js
 |   └── App.svelte
 |   └── main.js
 ```
-```
+
+```html
+<!-- ./src/__generated__/fr/components/Header.svelte -->
 <header>
   <t>Bienvenue</t>
 </header>
 ```
-
-
-The package also produces a JSON file with your translations, so you may use custom translations after initial run. 
-
-```json
-    {
-        "_src": "./src/components/Header.svelte",
-        "_dist": "./src/__generated__/fr/components/Header.svelte",
-        "en": "Welcome",
-        "es": "Bienvenidos",
-        "fr": "Bienvenue"
-    },
+```javascript
+// ./src/__generated__/fr/helpers.js
+const string = `<t>Bienvenue sur ${name}</t>`
 ```
 
-This file allows version control of your translations, also allows easy A/B for your translations quite easily.
+
+The package also produces a (specified) JSON file with your translations, so you may load from file, adjusting translations after initial run. 
+
+```json
+[
+  {
+    "_src": "./src/components/Header.svelte",
+    "en": "Welcome",
+    "es": "Bienvenidos",
+    "fr": "Bienvenue"
+  },
+  {
+    "_src": "./src/helpers.js",
+    "en": "Welcome to ${name}",
+    "es": "Bienvenido a ${name}",
+    "fr": "Bienvenue sur ${name}"
+  },
+]
+```
+
+This file allows version control of your translations, also allows easy A/B testing for your translations quite easily.
 
 See the [Example Svelte.js](./example-svelte) or [Example Vue.js](./example-vue) for how your project can look.
 
@@ -78,8 +105,11 @@ See the [Example Svelte.js](./example-svelte) or [Example Vue.js](./example-vue)
 * Google Cloud Translate account + API Key
 
 ## Getting started
+
+### Install
 `npm install --save-dev jamstack-translate`
 
+### Usage
 Create a file in your root directory (ex: translate.js)
 ```javascript
 require('dotenv').config()
@@ -111,6 +141,11 @@ const init = async () => {
 
 init();
 ```
+
+### Run
+then simply run
+`node translate.js`
+
 ---
 
 ## Current Issues and best practices and how to avoid them
@@ -126,7 +161,7 @@ Currently, this...
 ```
 Becomes...
 ```html
-<t><span class="text - green">hello</span> there</t>
+<t><span class="text - green"> bonjour </span> là</t>
 ```
 
 #### Single quotes when inside a JS file
@@ -246,13 +281,6 @@ In your HTML, instead of a script tag for bundle.js, dynamically load your new b
 And then use like so:
 
 `http://localhost:5000/?lng=es`
-
-**Note for Svelte.js**:  
-Svelte splits elements apart on compile, so in order to a dynamic string inside a translated file, you must set InnerHTML like so; This works really well :D (or google translate might make `name` into `nombre`...)
-```javascript
-{@html `<t>Hello my name is ${name}, nice to meet you!</t>`}
-```
-
 
 ## TODO
 - [x] Test static HTML files (`index.html` => `fr/index.html`)

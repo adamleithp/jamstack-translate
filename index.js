@@ -182,11 +182,9 @@ const getFilesStringsTranslated = async (filesArrayWithStrings, targetLanguages)
 
 const generateTranslatedFiles = async (filesWithTranslatedStrings, targetLanguages, sourceFolder, distFolder) => {
     const uniqueFiles = [...new Set(filesWithTranslatedStrings.map(obj => obj._file))];
-    console.log('uniqueFiles :>> ', uniqueFiles);
     const generatedFiles = []
     await Promise.all(
         uniqueFiles.map(async (filePath) => {
-            console.log('filePath :>> ', filePath);
             targetLanguages.map(async (language) => {
                 const pathAfterSourceFolder = filePath.split(sourceFolder)[1];
                 const newFileDestination = `${distFolder}${language}/${pathAfterSourceFolder}`;

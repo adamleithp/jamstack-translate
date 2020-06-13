@@ -1,6 +1,6 @@
 {
   "name": "jamstack-translate",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Generate static translations for any front end project.",
   "main": "index.js",
   "scripts": {
