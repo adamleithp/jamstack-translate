@@ -1,8 +1,8 @@
 
-# jamstack-translate
+# jamstack-translate (proof of concept)
 
 ### Generate static translations for any front end project.
-Google Translate your source folder and compile to static dist language directories without writing convoluted references to json files... I hate i18n libraries so much for the seperation of concern, so here is my personal fix.
+Google Translate your source folder and compile to static dist language directories without writing convoluted references to json files... I dislike i18n libraries so much for the seperation of concern, so here is my personal fix.
 
 
 #### What does this package do?
